@@ -45,13 +45,99 @@ from collections import defaultdict
 import pandas as pd
 from django.db.models.functions import ExtractYear
 from django.db.models.functions import ExtractYear, ExtractMonth
+from dateutil.relativedelta import relativedelta
+
+def calculate_patient_growth():
+    # Get current date and first day of current and previous months
+    now = timezone.now()
+    current_month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    previous_month_start = (current_month_start - relativedelta(months=1))
+    
+    # Get patient counts
+    current_month_patients = Patient.objects.filter(
+        date_added__gte=current_month_start
+    ).count()
+    
+    previous_month_patients = Patient.objects.filter(
+        date_added__gte=previous_month_start,
+        date_added__lt=current_month_start
+    ).count()
+    
+    # Calculate growth percentage
+    if previous_month_patients > 0:
+        growth_percentage = ((current_month_patients - previous_month_patients) / 
+                           previous_month_patients * 100)
+    else:
+        growth_percentage = 100 if current_month_patients > 0 else 0
+    
+    # Round to 1 decimal place
+    growth_percentage = round(growth_percentage, 1)
+    
+    # Determine if it's an increase or decrease
+    growth_type = 'increase' if growth_percentage >= 0 else 'decrease'
+    if growth_type == 'decrease':
+        growth_percentage = abs(growth_percentage)  # Make positive for display
+    
+    return {
+        'growth_percentage': growth_percentage,
+        'growth_type': growth_type,
+        'current_month_count': current_month_patients,
+        'previous_month_count': previous_month_patients
+    }
 
 
 @login_required
 def dashboard(request):
+    # Get total counts
+    total_patients = Patient.objects.count()
+    randomized_patients = Patient.objects.filter(randomization_status='Randomized').count()
+    unrandomized_patients = Patient.objects.filter(randomization_status='Unrandomized').count()
+    
+    # Calculate percentages
+    randomized_percentage = round((randomized_patients / total_patients * 100) if total_patients > 0 else 0, 1)
+    unrandomized_percentage = round((unrandomized_patients / total_patients * 100) if total_patients > 0 else 0, 1)
+    
+    growth_stats = calculate_patient_growth()
+    
     data = DiseaseTest.objects.values('disease_name', 'test_count')
     serialized_data = json.dumps(list(data), cls=DjangoJSONEncoder)
     # Get the current year
+    # Modify the gender distribution query to include randomization status
+    current_year = datetime.now().year
+    gender_rand_counts = Patient.objects.filter(
+        date_added__year=current_year
+    ).values(
+        'gender', 
+        'randomization_status', 
+        'date_added__month'
+    ).annotate(
+        count=Count('id')
+    ).order_by('date_added__month')
+
+    # Initialize arrays for all four series
+    months = ["January", "February", "March", "April", "May", "June", 
+             "July", "August", "September", "October", "November", "December"]
+    male_randomized = [0] * 12
+    male_unrandomized = [0] * 12
+    female_randomized = [0] * 12
+    female_unrandomized = [0] * 12
+
+    # Fill the arrays based on the query results
+    for record in gender_rand_counts:
+        month = record['date_added__month'] - 1  # Adjusting to 0-based index
+        count = record['count']
+        
+        if record['gender'] == 'Male':
+            if record['randomization_status'] == 'Randomized':
+                male_randomized[month] = count
+            else:
+                male_unrandomized[month] = count
+        elif record['gender'] == 'Female':
+            if record['randomization_status'] == 'Randomized':
+                female_randomized[month] = count
+            else:
+                female_unrandomized[month] = count
+
     current_year = datetime.now().year
 
     # Query for male and female patients grouped by the month they were added
@@ -76,7 +162,7 @@ def dashboard(request):
     doctors = Doctor.objects.all() # dispalying list of all doctor in html using for loop
     patients = Patient.objects.all()[:6] # displaying 6 patient in the database
     recent_activities = Activity.objects.order_by('-timestamp')[:6]
-    news_updates = NewsUpdate.objects.all().order_by('-published_date')[:7]
+    news_updates = NewsUpdate.objects.all().order_by('-published_date')[:8]
     
     # Basic stats
     context = {
@@ -94,6 +180,21 @@ def dashboard(request):
         'male_data': male_data,
         'female_data': female_data,
         'data': serialized_data,  # Pass the serialized data
+        #randomised and unrandomised
+        'total_patients': total_patients,
+        'randomized_patients': randomized_patients,
+        'unrandomized_patients': unrandomized_patients,
+        'randomized_percentage': randomized_percentage,
+        'unrandomized_percentage': unrandomized_percentage,
+        #growth
+        'growth_percentage': growth_stats['growth_percentage'],
+        'growth_type': growth_stats['growth_type'],
+        #randomised graph
+        # Add the new gender randomization data
+        'male_randomized': json.dumps(male_randomized),
+        'male_unrandomized': json.dumps(male_unrandomized),
+        'female_randomized': json.dumps(female_randomized),
+        'female_unrandomized': json.dumps(female_unrandomized),
     }
     
     

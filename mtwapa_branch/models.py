@@ -65,8 +65,60 @@ class Patient(models.Model):
     profile_picture = models.ImageField(upload_to='patient_profiles/', blank=True, null=True)
     date_added = models.DateTimeField( blank=True, null=True )  
 
+    # New fields for testing results
+    hiv_status = models.CharField(
+        max_length=10,
+        choices=[('Positive', 'Positive'), ('Negative', 'Negative')],
+        blank=True,
+        null=True
+    )
+    oft_status = models.CharField(
+        max_length=10,
+        choices=[('Positive', 'Positive'), ('Negative', 'Negative')],
+        blank=True,
+        null=True
+    )
+    mtb_a_status = models.CharField(
+        max_length=15,
+        choices=[('Detected', 'Detected'), ('Not Detected', 'Not Detected')],
+        blank=True,
+        null=True
+    )
+    pregnancy_status = models.CharField(
+        max_length=10,
+        choices=[('Positive', 'Positive'), ('Negative', 'Negative')],
+        blank=True,
+        null=True
+    )
+    randomization_status = models.CharField(
+        max_length=15,
+        choices=[('Randomized', 'Randomized'), ('Unrandomized', 'Unrandomized')],
+        blank=True,
+        null=True
+    )
+
+    def determine_randomization_status(self):
+        """
+        Determines the randomization status based on testing results.
+        """
+        if (
+            self.hiv_status == 'Negative' and
+            self.oft_status == 'Positive' and
+            self.mtb_a_status == 'Not Detected' and
+            (self.pregnancy_status == 'Negative' or self.gender == 'Male')
+        ):
+            return 'Randomized'
+        return 'Unrandomized'
+
+    def save(self, *args, **kwargs):
+        # Automatically determine randomization status before saving
+        self.randomization_status = self.determine_randomization_status()
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name} - {self.randomization_status}"
+
+    
 
 
 # Intern Model
