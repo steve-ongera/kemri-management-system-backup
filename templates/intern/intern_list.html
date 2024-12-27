@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Intern List</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item">Interns</li>
+            <li class="breadcrumb-item active"><a href="{% url 'intern_create' %}">Add Intern</a></li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Interns</h5>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped datatable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for intern in interns %}
+                                <tr>
+                                    <td><a href="{% url 'intern_detail' intern.pk %}">{{ intern }}</a></td>
+                                    <td>{{ intern.email }}</td>
+                                    <td><a href="{% url 'intern_update' intern.pk %}">Edit</a></td>
+                                    <td><a href="{% url 'intern_delete' intern.pk %}">Delete</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- End Table with stripped rows -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

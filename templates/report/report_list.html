@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Patient Reports</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'report_list' %}">Reports</a></li>
+            <li class="breadcrumb-item active">Patient Reports</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Patient Reports</h5>
+                    <a href="{% url 'report_create' %}" class="btn btn-primary mb-3">Add New Report</a>
+
+                    <ul class="list-group">
+                        {% for report in reports %}
+                        <li class="list-group-item">
+                            <a href="{% url 'report_detail' report.pk %}">
+                                Report for {{ report.patient.first_name }} {{ report.patient.last_name }} ({{ report.date }})
+                            </a>
+                            - <a href="{% url 'report_update' report.pk %}">Edit</a>
+                            - <a href="{% url 'report_delete' report.pk %}">Delete</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

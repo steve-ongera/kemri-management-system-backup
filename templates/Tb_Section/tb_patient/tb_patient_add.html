@@ -1,0 +1,202 @@
+{% extends 'base/base.html' %}
+{% load form_tags %}
+{% block content %}
+
+<div class="container py-4">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title mb-0">Add TB Patient</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" class="row g-3">
+                {% csrf_token %}
+                
+                {# Personal Information Section #}
+                <div class="col-12">
+                    <h5 class="text-primary">Personal Information</h5>
+                    <hr>
+                </div>
+                
+                <div class="col-md-4">
+                    {{ form.user_name.label_tag }}
+                    {{ form.user_name }}
+                    <div class="text-danger small">{{ form.user_name.errors }}</div>
+                </div>
+                <div class="col-md-4">
+                    {{ form.identification_no.label_tag }}
+                    {{ form.identification_no }}
+                    <div class="text-danger small">{{ form.identification_no.errors }}</div>
+                </div>
+                <div class="col-md-4">
+                    {{ form.identification_type.label_tag }}
+                    {{ form.identification_type }}
+                    <div class="text-danger small">{{ form.identification_type.errors }}</div>
+                </div>
+
+                <div class="col-md-4">
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
+                    <div class="text-danger small">{{ form.first_name.errors }}</div>
+                </div>
+                <div class="col-md-4">
+                    {{ form.last_name.label_tag }}
+                    {{ form.last_name }}
+                    <div class="text-danger small">{{ form.last_name.errors }}</div>
+                </div>
+                <div class="col-md-4">
+                    {{ form.dob.label_tag }}
+                    {{ form.dob }}
+                    <div class="text-danger small">{{ form.dob.errors }}</div>
+                </div>
+
+                {# Diagnosis Information #}
+                <div class="col-12">
+                    <h5 class="text-primary mt-3">Diagnosis Information</h5>
+                    <hr>
+                </div>
+
+                <div class="col-md-4">
+                    {{ form.diagnosis_date.label_tag }}
+                    {{ form.diagnosis_date }}
+                    <div class="text-danger small">{{ form.diagnosis_date.errors }}</div>
+                </div>
+                <div class="col-md-4">
+                    {{ form.county.label_tag }}
+                    {{ form.county }}
+                    <div class="text-danger small">{{ form.county.errors }}</div>
+                </div>
+                <div class="col-md-4">
+                    {{ form.tb_stage.label_tag }}
+                    {{ form.tb_stage }}
+                    <div class="text-danger small">{{ form.tb_stage.errors }}</div>
+                </div>
+
+                {# Vaccine Information #}
+                <div class="col-12">
+                    <h5 class="text-primary mt-3">Vaccine Information</h5>
+                    <hr>
+                </div>
+
+                <div class="col-md-6">
+                    {{ form.vaccine_received.label_tag }}
+                    {{ form.vaccine_received }}
+                    <div class="text-danger small">{{ form.vaccine_received.errors }}</div>
+                </div>
+                <div class="col-md-6">
+                    {{ form.vaccine_effectiveness.label_tag }}
+                    {{ form.vaccine_effectiveness }}
+                    <div class="text-danger small">{{ form.vaccine_effectiveness.errors }}</div>
+                </div>
+
+                {# Weekly Progress #}
+                <div class="col-12">
+                    <h5 class="text-primary mt-3">Weekly Progress</h5>
+                    <hr>
+                </div>
+                 
+                {# Weekly Progress #}
+                <div class="col-12">
+                    <h5 class="text-primary mt-3">Weekly Progress</h5>
+                    <hr>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        {{ form.week_1.label_tag }}
+                        {{ form.week_1 }}
+                        <div class="text-danger small">{{ form.week_1.errors }}</div>
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.week_2.label_tag }}
+                        {{ form.week_2 }}
+                        <div class="text-danger small">{{ form.week_2.errors }}</div>
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.week_3.label_tag }}
+                        {{ form.week_3 }}
+                        <div class="text-danger small">{{ form.week_3.errors }}</div>
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.week_4.label_tag }}
+                        {{ form.week_4 }}
+                        <div class="text-danger small">{{ form.week_4.errors }}</div>
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.week_5.label_tag }}
+                        {{ form.week_5 }}
+                        <div class="text-danger small">{{ form.week_5.errors }}</div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-2">
+                        {{ form.week_6.label_tag }}
+                        {{ form.week_6 }}
+                        <div class="text-danger small">{{ form.week_6.errors }}</div>
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.week_7.label_tag }}
+                        {{ form.week_7 }}
+                        <div class="text-danger small">{{ form.week_7.errors }}</div>
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.week_8.label_tag }}
+                        {{ form.week_8 }}
+                        <div class="text-danger small">{{ form.week_8.errors }}</div>
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.week_9.label_tag }}
+                        {{ form.week_9 }}
+                        <div class="text-danger small">{{ form.week_9.errors }}</div>
+                    </div>
+                    <div class="col-md-2">
+                        {{ form.week_10.label_tag }}
+                        {{ form.week_10 }}
+                        <div class="text-danger small">{{ form.week_10.errors }}</div>
+                    </div>
+                </div>
+                {# Treatment Information #}
+                <div class="col-12">
+                    <h5 class="text-primary mt-3">Treatment Information</h5>
+                    <hr>
+                </div>
+
+                <div class="col-md-6">
+                    {{ form.treatment_start_date.label_tag }}
+                    {{ form.treatment_start_date }}
+                    <div class="text-danger small">{{ form.treatment_start_date.errors }}</div>
+                </div>
+                <div class="col-md-6">
+                    {{ form.treatment_end_date.label_tag }}
+                    {{ form.treatment_end_date }}
+                    <div class="text-danger small">{{ form.treatment_end_date.errors }}</div>
+                </div>
+
+                <div class="col-12">
+                    {{ form.treatment_notes.label_tag }}
+                    {{ form.treatment_notes }}
+                    <div class="text-danger small">{{ form.treatment_notes.errors }}</div>
+                </div>
+
+                <div class="col-12">
+                    {{ form.performance_status.label_tag }}
+                    {{ form.performance_status }}
+                    <div class="text-danger small">{{ form.performance_status.errors }}</div>
+                </div>
+
+                <div class="col-md-6">
+                    {{ form.follow_up_date.label_tag }}
+                    {{ form.follow_up_date }}
+                    <div class="text-danger small">{{ form.follow_up_date.errors }}</div>
+                </div>
+
+                <div class="col-12 text-center mt-4">
+                    <button type="submit" class="btn btn-primary px-4">Save Patient</button>
+                    <a href="{% url 'tb_patient_list' %}" class="btn btn-secondary px-4">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

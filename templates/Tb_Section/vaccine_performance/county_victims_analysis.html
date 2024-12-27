@@ -1,0 +1,82 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+ <!-- Chart.js library -->
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="pagetitle">
+    <h1>County TB Victims Analysis</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">TB Victims by County</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">TB Victims by County</h5>
+
+                    <!-- Bar chart canvas -->
+                    <div class="chart-container">
+                        <canvas id="countyVictimsChart" width="600" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    // Get the data passed from the view
+    const counties = {{ counties|safe }};  // Array of county names
+    const victimCounts = {{ victim_counts|safe }};  // Array of counts for each county
+
+    // Create the bar chart
+    const ctx = document.getElementById('countyVictimsChart').getContext('2d');
+    const countyVictimsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: counties,
+            datasets: [{
+                label: 'Number of TB Victims',
+                data: victimCounts,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',  // Teal color for bars
+                borderColor: 'rgba(75, 192, 192, 1)',  // Teal border
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Number of Victims'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'County'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+</script>
+
+
+
+{% endblock %}

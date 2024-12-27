@@ -1,0 +1,6 @@
+Medical Report
+
+Patient: Alice Carter
+Date: 2024-03-01
+
+Dental examination report. Two cavities identified. Scheduled for filling procedure next week.

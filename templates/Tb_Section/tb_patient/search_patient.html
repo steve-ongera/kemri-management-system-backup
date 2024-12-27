@@ -1,0 +1,229 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- Patient's Profile Picture -->
+                {% if patient.profile_picture %}
+                    <img src="{{ patient.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded">
+                {% else %}
+                    <img src="{% static 'assets/img/profile.png' %}" alt="Profile Picture" class="img-fluid rounded" style="max-height: 150px;">
+                {% endif %}
+
+                <!-- Search Form -->
+                <div class="search-form mb-4">
+                    <h5>Enter Patient Identification Number</h5>
+                    <form method="get" action="{% url 'search_tb_patient' %}">
+                        <input type="text" name="identification_no" placeholder="Enter ID number" required class="form-control">
+                        <button type="submit" class="btn btn-primary mt-3">Search</button>
+                    </form>
+                </div>
+
+            </div>
+            <div class="col-md-8">
+                <h2 class="card-title mb-4">Search for a TB Patient</h2>
+                <nav>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Search TB Patient</li>
+                    </ol>
+                </nav>
+
+                
+
+                {% if patient %}
+                <div class="patient-info">
+                    <h3>Patient Information</h3>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Username</h6>
+                            <p>{{ patient.user_name }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">First Name</h6>
+                            <p>{{ patient.first_name }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Last Name</h6>
+                            <p>{{ patient.last_name }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Identification Type</h6>
+                            <p>{{ patient.identification_type }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Identification Number</h6>
+                            <p>{{ patient.identification_no }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Date of Birth</h6>
+                            <p>{{ patient.dob }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Diagnosis Date</h6>
+                            <p>{{ patient.diagnosis_date }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">County</h6>
+                            <p>{{ patient.county }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">TB Stage</h6>
+                            <p>{{ patient.tb_stage }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Vaccine Received</h6>
+                            <p>{{ patient.vaccine_received }}</p>
+                        </div>
+                    </div>
+
+                    
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Vaccine Effectiveness</h6>
+                            <p>{{ patient.vaccine_effectiveness }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Treatment Start Date</h6>
+                            <p>{{ patient.treatment_start_date }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Treatment End Date</h6>
+                            <p>{{ patient.treatment_end_date }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Follow-Up Date</h6>
+                            <p>{{ patient.follow_up_date }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h6 class="text-muted">Treatment Notes</h6>
+                            <p>{{ patient.treatment_notes }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <h6 class="text-muted">Performance Status</h6>
+                            <p>{{ patient.performance_status }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% elif patient is not None %}
+                <div class="patient-info">
+                    <p>No patient found with that identification number.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% comment %}
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <!-- Profile Image and Search -->
+        <div class="row mb-4">
+            <!-- Profile Image -->
+            <div class="col-md-4 d-flex align-items-start">
+                {% if tb_patient.profile_picture %}
+                    <img src="{{ tb_patient.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded" style="max-height: 150px;">
+                {% else %}
+                    <img src="{% static 'assets/img/profile.png' %}" alt="Default Profile Picture" class="img-fluid rounded" style="max-height: 150px;">
+                {% endif %}
+            </div>
+            <!-- Search Form -->
+            <div class="col-md-8">
+                <form method="get" action="{% url 'search_tb_patient' %}" class="d-flex">
+                    <input type="text" name="search" class="form-control me-2" placeholder="Search by name or ID">
+                    <button type="submit" class="btn btn-outline-primary">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Form Title -->
+        <h5 class="card-title">Update Information for {{ tb_patient.first_name }} {{ tb_patient.last_name }}</h5>
+        
+        <!-- Update Form -->
+        <form method="post" enctype="multipart/form-data" class="row g-3">
+            {% csrf_token %}
+            
+            <!-- User Information -->
+            <div class="col-md-4">
+                {{ form.user_name.label_tag }}
+                {{ form.user_name }}
+                {{ form.user_name.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.identification_no.label_tag }}
+                {{ form.identification_no }}
+                {{ form.identification_no.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.identification_type.label_tag }}
+                {{ form.identification_type }}
+                {{ form.identification_type.errors }}
+            </div>
+
+            <!-- Add other fields here following the same format -->
+
+            <!-- Weekly Progress Section -->
+            <div class="col-12">
+                <h6 class="mt-3 mb-2">Weekly Progress</h6>
+                <div class="row g-3">
+                    {% for week in form.week_1|slice:10 %}
+                        <div class="col-md-2">
+                            {{ week.label_tag }}
+                            {{ week }}
+                            {{ week.errors }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Other Form Fields -->
+            <div class="col-md-4">
+                {{ form.follow_up_date.label_tag }}
+                {{ form.follow_up_date }}
+                {{ form.follow_up_date.errors }}
+            </div>
+
+            <!-- Submit and Cancel Buttons -->
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="#" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+{% endcomment %}

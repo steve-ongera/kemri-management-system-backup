@@ -1,0 +1,113 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                {% if tb_patient.profile_picture %}
+                    <img src="{{ tb_patient.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded">
+                {% else %}
+                    <img src="{% static 'assets/img/profile.png' %}" alt="Profile Picture" class="img-fluid rounded">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <h2 class="card-title mb-4">Details for {{ tb_patient.first_name }} {{ tb_patient.last_name }}</h2>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Username</h6>
+                        <p>{{ tb_patient.user_name }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Stage of TB</h6>
+                        <p>{{ tb_patient.tb_stage }}</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Vaccine Received</h6>
+                        <p>{{ tb_patient.vaccine_received }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Diagnosis Date</h6>
+                        <p>{{ tb_patient.diagnosis_date }}</p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-muted">Treatment Notes</h6>
+                    <p>{{ tb_patient.treatment_notes }}</p>
+                </div>
+
+                <h3 class="mb-4">Weekly Progress</h3>
+                <ul class="list-group">
+                    {% for week, progress in tb_patient.weekly_progress.items %}
+                        <li class="list-group-item">
+                            <strong>{{ week|title }}:</strong> {{ progress }}%
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <h3 class="mt-4">Performance Over Weeks</h3>
+                <div class="chart-container mb-4">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    const ctx = document.getElementById('performanceChart').getContext('2d');
+                    const weeks = {{ weeks|safe }};  // List of week labels
+                    const performanceData = {{ performance_data|safe }};  // Performance data as floats
+
+                    const performanceChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: weeks,
+                            datasets: [{
+                                label: 'Patient Recovery Performance (%)',
+                                data: performanceData,
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100,
+                                    title: {
+                                        display: true,
+                                        text: 'Recovery Percentage'
+                                    }
+                                }
+                            },
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                }
+                            }
+                        }
+                    });
+                </script>
+
+                <div class="mt-4">
+                    <a href="{% url 'tb_patient_update' tb_patient.pk %}" class="btn btn-primary me-2">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    <a href="{% url 'tb_patient_list' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

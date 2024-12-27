@@ -1,0 +1,6 @@
+Medical Report
+
+Patient: Alice Carter
+Date: 2024-01-15
+
+Annual physical examination report. Blood pressure: 120/80, Heart rate: 72 bpm. Overall health status: Good. Recommended routine exercise and balanced diet.

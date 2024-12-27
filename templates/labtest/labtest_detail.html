@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Lab Test Details</h1>
+<p><strong>Patient:</strong> {{ test.patient.first_name }} {{ test.patient.last_name }}</p>
+<p><strong>Test Name:</strong> {{ test.test_name }}</p>
+<p><strong>Test Date:</strong> {{ test.get_test_date_formatted }}</p>
+<p><strong>Results:</strong> {{ test.results|default:"No results available" }}</p>
+<a href="{% url 'labtest_update' test.pk %}">Edit</a>
+<a href="{% url 'labtest_list' %}">Back to List</a>
+{% endblock %}

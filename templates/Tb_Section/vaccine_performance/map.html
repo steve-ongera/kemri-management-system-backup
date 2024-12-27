@@ -1,0 +1,88 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="pagetitle">
+    <h1>TB Patients by County in Kenya</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">TB Patients Map</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <p>The map below shows counties with TB victims and their corresponding numbers.</p>
+
+                    <!-- Map container -->
+                    <div id="map" style="height: 600px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script>
+    // Initialize the map and set its view to a central point in Kenya
+    var map = L.map('map').setView([-1.286389, 36.817223], 6);  // Centered on Nairobi with an initial zoom level of 6
+
+    // Add OpenStreetMap tiles to the map
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Define the geographical boundaries for Kenya
+    var kenyaBounds = [
+        [-4.743564, 34.833151], // Southwest corner (e.g., near the Tanzania border)
+        [4.634724, 41.859086]   // Northeast corner (e.g., near the Somalia border)
+    ];
+
+    // Set the map's view to be constrained within the boundaries of Kenya
+    map.setMaxBounds(kenyaBounds);
+    
+    // Disable zooming out beyond the specified zoom level
+    map.setMinZoom(6);  // Minimum zoom level
+    map.setMaxZoom(10); // Maximum zoom level for more detail
+
+    // Data passed from the Django view
+    var countiesData = {{ counties_data|safe }};
+    console.log(countiesData);  // Check the data in the console
+
+    // Find the maximum number of victims for setting icon color
+    var maxVictims = Math.max(...countiesData.map(county => county.victims));
+
+    // Add a marker for each county
+    countiesData.forEach(function(county) {
+        // Set the icon based on the number of victims
+        var iconUrl = county.victims === maxVictims ? "{% static 'assets/img/redlocation.png' %}" : "{% static 'assets/img/bluelocation.png' %}";
+
+        // Create a custom icon
+        var customIcon = L.icon({
+            iconUrl: iconUrl,
+            iconSize: [25, 33], // size of the icon
+            iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
+            popupAnchor: [1, -34], // point from which the popup should open relative to the iconAnchor
+        });
+
+        // Add the marker to the map with the custom icon
+        L.marker([county.location.lat, county.location.lng], { icon: customIcon })
+            .addTo(map)
+            .bindPopup(county.name + ' - TB Patients: ' + county.victims).openPopup();
+    });
+</script>
+
+{% endblock %}
+
+
+

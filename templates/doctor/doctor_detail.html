@@ -1,0 +1,76 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="card">
+   <div class="card-body">
+       <div class="row">
+           <div class="col-md-4">
+               {% if doctor.profile_picture %}
+                   <img src="{{ doctor.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded">
+                {% else %}
+                   <img src="{% static 'assets/img/profile.png'%}" alt="Profile Picture" class="img-fluid rounded">   
+               {% endif %}
+           </div>
+           <div class="col-md-8">
+               <h2 class="card-title mb-4"> {{ doctor }}</h2>
+               
+               <div class="row mb-3">
+                   <div class="col-md-6">
+                       <h6 class="text-muted">Gender</h6>
+                       <p>{{ doctor.gender }}</p>
+                   </div>
+                   <div class="col-md-6">
+                       <h6 class="text-muted">Phone</h6>
+                       <p>{{ doctor.phone }}</p>
+                   </div>
+               </div>
+
+               <div class="row mb-3">
+                   <div class="col-md-6">
+                       <h6 class="text-muted">Specialization</h6>
+                       <p>{{ doctor.specialization }}</p>
+                   </div>
+                   <div class="col-md-6">
+                       <h6 class="text-muted">Department</h6>
+                       <p>{{ doctor.department }}</p>
+                   </div>
+               </div>
+
+               <div class="row mb-4">
+                   <div class="col-md-6">
+                       <h6 class="text-muted">Years of Experience</h6>
+                       <p>{{ doctor.years_of_experience }}</p>
+                   </div>
+                   <div class="col-md-6">
+                       <h6 class="text-muted">Available Days</h6>
+                       <p>{{ doctor.available_days }}</p>
+                   </div>
+               </div>
+
+               {% if doctor.username %}
+                    {% if doctor.username in user_usernames %}
+                        <div class="mt-3">
+                            <a href="{% url 'create_chat' doctor.username %}" class="btn btn-outline-primary">
+                                <i class="bi bi-envelope"></i> Message {{ doctor.username }}
+                            </a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <p>Cannot message this doctor as no username is set.</p>
+                {% endif %}
+
+               <div class="mt-4">
+                   <a href="{% url 'doctor_update' doctor.pk %}" class="btn btn-primary me-2">
+                       <i class="bi bi-pencil"></i> Edit
+                   </a>
+                   <a href="{% url 'doctor_list' %}" class="btn btn-secondary">
+                       <i class="bi bi-arrow-left"></i> Back to List
+                   </a>
+               </div>
+           </div>
+       </div>
+   </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{% if form.instance.pk %}Edit Patient{% else %}Add Patient{% endif %}</h5>
+        
+        <form method="post" enctype="multipart/form-data" class="row g-3">
+            {% csrf_token %}
+
+            <div class="col-md-4">
+                {{ form.first_name }}
+                {{ form.first_name.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.last_name }}
+                {{ form.last_name.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.phone }}
+                {{ form.phone.errors }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form.gender }}
+                {{ form.gender.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.Identification_no }}
+                {{ form.Identification_no.errors }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form.date_of_birth }}
+                {{ form.date_of_birth.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.address }}
+                {{ form.address.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.emergency_contact_name }}
+                {{ form.emergency_contact_name.errors }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form.emergency_contact_number }}
+                {{ form.emergency_contact_number.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.blood_type }}
+                {{ form.blood_type.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.allergies }}
+                {{ form.allergies.errors }}
+            </div>
+
+            <div class="col-md-4">
+                {{ form.chronic_conditions }}
+                {{ form.chronic_conditions.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.medical_history }}
+                {{ form.medical_history.errors }}
+            </div>
+            <div class="col-md-4">
+                {{ form.insurance_provider }}
+                {{ form.insurance_provider.errors }}
+            </div>
+
+            <div class="col-md-4">
+                {% if patient.profile_picture %}
+                    <img src="{{ patient.profile_picture.url }}" alt="Current Profile Picture" class="img-thumbnail mb-2" style="max-height: 100px;">
+                {% endif %}
+                {{ form.profile_picture }}
+                {{ form.profile_picture.errors }}
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{% url 'patient_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

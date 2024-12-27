@@ -1,0 +1,53 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Appointments</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Appointments</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Manage Appointments</h5>
+                    <p>Here you can view, edit, and cancel your appointments.</p>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped datatable">
+                            <thead>
+                                <tr>
+                                    <th>Doctor</th>
+                                    <th>Date</th>
+                                    <th>Details</th>
+                                    <th>Edit</th>
+                                    <th>Cancel</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in appointments %}
+                                <tr>
+                                    <td><a href="{% url 'appointment_detail' appointment.pk %}">Dr. {{ appointment.doctor.first_name }} {{ appointment.doctor.last_name }}</a></td>
+                                    <td>{{ appointment.date }}</td>
+                                    <td><a href="{% url 'appointment_detail' appointment.pk %}">View</a></td>
+                                    <td><a href="{% url 'appointment_update' appointment.pk %}">Edit</a></td>
+                                    <td><a href="{% url 'appointment_delete' appointment.pk %}">Cancel</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div><!-- End Table with stripped rows -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

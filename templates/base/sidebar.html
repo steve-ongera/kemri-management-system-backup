@@ -1,0 +1,335 @@
+{% load static %}
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'dashboard'%}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#staff-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-people"></i><span>Staff</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="staff-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          
+          <!-- Doctors Sub-List -->
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#doctors-subnav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-person-badge"></i><span>Doctors</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="doctors-subnav" class="nav-content collapse">
+              <li>
+                <a href="{% url 'doctor_list' %}">
+                  <i class="bi bi-circle"></i><span>Doctors List</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'doctor_create' %}">
+                  <i class="bi bi-circle"></i><span>Add Doctors</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'search_doctors' %}">
+                  <i class="bi bi-circle"></i><span>Search Doctors</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          
+          <!-- Interns Sub-List -->
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#interns-subnav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-person-lines-fill"></i><span>Interns</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="interns-subnav" class="nav-content collapse">
+              <li>
+                <a href="{% url 'intern_list' %}">
+                  <i class="bi bi-circle"></i><span>Interns List</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'intern_create' %}">
+                  <i class="bi bi-circle"></i><span>Add Intern</span>
+                </a>
+              </li>
+              <li>
+                <a href="#">
+                  <i class="bi bi-circle"></i><span>Search Intern</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!--staffs -->
+
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#staff-subnav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-person-x"></i><span>Staff</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="staff-subnav" class="nav-content collapse">
+              <li>
+                <a href="{% url 'staff_list'%}">
+                  <i class="bi bi-circle"></i><span>Staff List</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'staff_create'%}">
+                  <i class="bi bi-circle"></i><span>Add staff</span>
+                </a>
+              </li>
+    
+              <li>
+                <a href="#">
+                  <i class="bi bi-circle"></i><span>Search Staff</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          
+          <!-- Non-Staff Sub-List -->
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#nonstaff-subnav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-person-x"></i><span>Non-Staff</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="nonstaff-subnav" class="nav-content collapse">
+              <li>
+                <a href="{% url 'nonstaff_list' %}">
+                  <i class="bi bi-circle"></i><span>Non-Staff List</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'nonstaff_create' %}">
+                  <i class="bi bi-circle"></i><span>Add Non-Staff</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          
+        </ul>
+      </li><!-- End Staff Nav -->
+      
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Patients</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'patient_list'%}">
+              <i class="bi bi-circle"></i><span>Patients List</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'patient_create'%}">
+              <i class="bi bi-circle"></i><span>Add Patient</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="{% url 'patient_search'%}">
+              <i class="bi bi-circle"></i><span>Search Patient</span>
+            </a>
+          </li>
+          
+          
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Deparments</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'department_list'%}">
+              <i class="bi bi-circle"></i><span>Deparments List</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'department_create'%}">
+              <i class="bi bi-circle"></i><span>Add Deparment</span>
+            </a>
+          </li>
+
+          
+
+        </ul>
+      </li><!-- End Tables Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-bar-chart"></i><span>Appoinments</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'appointment_list'%}">
+              <i class="bi bi-circle"></i><span>Appoinments List</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'appointment_create'%}">
+              <i class="bi bi-circle"></i><span>Add Appoinments</span>
+            </a>
+          </li>
+
+         
+          
+        </ul>
+      </li><!-- End Charts Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Reports
+          </span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'report_list'%}">
+              <i class="bi bi-circle"></i><span>Medical Reports</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="{% url 'report_create'%}">
+              <i class="bi bi-circle"></i><span>Create Reports</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="{% url 'labtest_list'%}">
+              <i class="bi bi-circle"></i><span>Lab Reports</span>
+            </a>
+          </li>
+         
+        </ul>
+      </li><!-- End Icons Nav -->
+
+      <li class="nav-heading">Pages</li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'profile_detail'%}">
+          <i class="bi bi-person"></i>
+          <span>Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tb-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-people"></i><span>TB Section</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tb-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          
+          <!-- TB Sub-List -->
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#tbpatient-subnav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-person-badge"></i><span>TB Patients</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tbpatient-subnav" class="nav-content collapse">
+              <li>
+                <a href="{% url 'tb_patient_list' %}">
+                  <i class="bi bi-circle"></i><span>TB patient  List</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'tb_patient_add' %}">
+                  <i class="bi bi-circle"></i><span>Add Patient</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'search_tb_patient'%}">
+                  <i class="bi bi-circle"></i><span>Search Patient</span>
+                </a>
+              </li>
+            </ul>
+          </li>
+          
+          <!-- Vaccine Performance Sub-List -->
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#vaccine_performance-subnav" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-person-lines-fill"></i><span>Vaccine</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="vaccine_performance-subnav" class="nav-content collapse">
+              <li>
+                <a href="{% url 'vaccine_performance' %}">
+                  <i class="bi bi-circle"></i><span>vaccine performance</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'vaccine_analysis' %}">
+                  <i class="bi bi-circle"></i><span>vaccine analysis</span>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          <!--county_victims_analysis -->
+
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#county_victims_analysis" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-person-x"></i><span>County Analysis</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="county_victims_analysis" class="nav-content collapse">
+              <li>
+                <a href="{% url 'county_victims_analysis'%}">
+                  <i class="bi bi-circle"></i><span>victims analysis</span>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+          <!-- Non-Staff Sub-List -->
+          <li>
+            <a class="nav-link collapsed" data-bs-target="#tb_patients_map" data-bs-toggle="collapse" href="#">
+              <i class="bi bi-person-x"></i><span>Country Analysis</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tb_patients_map" class="nav-content collapse">
+              <li>
+                <a href="{% url 'tb_patients_map' %}">
+                  <i class="bi bi-circle"></i><span>Maps</span>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          
+        </ul>
+      </li><!-- End Staff Nav --><!-- End F.A.Q Page Nav -->
+
+      
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'register'%}">
+          <i class="bi bi-card-list"></i>
+          <span>Register</span>
+        </a>
+      </li><!-- End Register Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'login'%}">
+          <i class="bi bi-box-arrow-in-right"></i>
+          <span>Login</span>
+        </a>
+      </li><!-- End Login Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'system_settings'%}">
+          <i class="bi bi-dash-circle"></i>
+          <span> System Settings</span>
+        </a>
+      </li><!-- End Error 404 Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'help_and_support'%}">
+          <i class="bi bi-file-earmark"></i>
+          <span>Help & Support</span>
+        </a>
+      </li><!-- End Blank Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->

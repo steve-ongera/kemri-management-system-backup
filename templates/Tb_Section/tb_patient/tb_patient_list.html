@@ -1,0 +1,99 @@
+
+
+
+    {% extends "base/base.html" %}
+
+
+
+    {% block content %}
+    <style>
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .action-buttons a {
+            text-decoration: none;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .view {
+            background-color: #007bff; /* Bootstrap primary color */
+        }
+        .update {
+            background-color: #28a745; /* Bootstrap success color */
+        }
+        .delete {
+            background-color: #dc3545; /* Bootstrap danger color */
+        }
+    </style>
+    
+    <div class="pagetitle">
+        <h1>Kemri TB patients Record </h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard'%}">Home</a></li>
+            <li class="breadcrumb-item">tb patient</li>
+            <li class="breadcrumb-item active"><a href="{% url 'tb_patient_add' %}">Add Record</a></li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+    
+    
+    
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+    
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Doctors </h5>
+      
+                <div class="table-responsive">
+                    
+                 {% if tb_patients %}
+                    <table class="table table-striped datatable">
+                    <thead>
+                        <tr>
+    
+                        <th>Username</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Stage </th>
+                        <th>Vaccine </th>
+                        <th>Diagnosis Date</th>
+                        <th>Actions</th>  <!-- New Actions Column -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for patient in tb_patients %}
+                        <tr>
+                            <td>{{ patient.user_name }}</td>
+                            <td>{{ patient.first_name }}</td>
+                            <td>{{ patient.last_name }}</td>
+                            <td>{{ patient.tb_stage }}</td>
+                            <td>{{ patient.vaccine_received }}</td>
+                            <td>{{ patient.diagnosis_date }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a clas="btn btn-primary" href="{% url 'tb_patient_detail' patient.id %}" class="view">View</a>
+                                    <a href="{% url 'tb_patient_update' patient.id %}" class="update">Update</a>
+                                    <a href="{% url 'tb_patient_delete' patient.id %}" class="delete" onclick="return confirm('Are you sure you want to delete this patient?');">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No TB patients found.</p>
+        {% endif %}
+     <!-- End Table with stripped rows -->
+    </div>
+    </div>
+    </div>
+    </div>
+    </section>
+    
+    {% endblock %}

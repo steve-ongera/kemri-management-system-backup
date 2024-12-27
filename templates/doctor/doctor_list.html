@@ -1,0 +1,62 @@
+
+
+
+
+{% extends "base/base.html" %}
+
+
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Kemri Doctors  </h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard'%}">Home</a></li>
+        <li class="breadcrumb-item">doctors</li>
+        <li class="breadcrumb-item active"><a href="{% url 'doctor_create' %}">Add Doctor</a></li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+
+
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Doctors </h5>
+  
+            <div class="table-responsive">
+                <table class="table table-striped datatable">
+                <thead>
+                    <tr>
+                        <th>Name </th>
+                        <th>specialization </th>
+                        <th>phone</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doctor in doctors %}
+                    <tr>
+                        <td><a href="{% url 'doctor_detail' doctor.pk %}">{{ doctor }}</a></td>
+                        <td>  {{ doctor.specialization  }}</td>
+                        <td>{{ doctor.phone }}</td>
+                        <td><a href="{% url 'doctor_update' doctor.pk %}">Edit</a></td>
+                        <td><a href="{% url 'doctor_delete' doctor.pk %}">Delete</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+           <!-- End Table with stripped rows -->
+        </div>
+    </div>
+    </div>
+    </div>
+    </section>
+    
+    {% endblock %}

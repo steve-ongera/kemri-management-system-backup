@@ -1,0 +1,6 @@
+Medical Report
+
+Patient: Peter Omondi
+Date: 2024-02-01
+
+MRI scan results of lower back. Shows mild disc degeneration at L4-L5. Recommended physical therapy and posture correction.

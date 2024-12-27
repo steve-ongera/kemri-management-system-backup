@@ -1,0 +1,158 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<div class="card">
+   <div class="card-body">
+       <h5 class="card-title">
+           {% if form.instance.pk %}
+               Update Staff
+           {% else %}
+               Add Staff
+           {% endif %}
+       </h5>
+       <form method="post" enctype="multipart/form-data" class="row g-3">
+           {% csrf_token %}
+           
+           <div class="col-md-4">
+               {{ form.first_name.label_tag }}
+               {{ form.first_name }}
+               {{ form.first_name.errors }}
+           </div>
+           <div class="col-md-4">
+               {{ form.last_name.label_tag }}
+               {{ form.last_name }}
+               {{ form.last_name.errors }}
+           </div>
+           <div class="col-md-4">
+               {{ form.gender.label_tag }}
+               {{ form.gender }}
+               {{ form.gender.errors }}
+           </div>
+
+           <div class="col-md-6">
+               {{ form.phone.label_tag }}
+               {{ form.phone }}
+               {{ form.phone.errors }}
+           </div>
+           <div class="col-md-6">
+               {{ form.email.label_tag }}
+               {{ form.email }}
+               {{ form.email.errors }}
+           </div>
+
+           <div class="col-md-6">
+               {{ form.identification_no.label_tag }}
+               {{ form.identification_no }}
+               {{ form.identification_no.errors }}
+           </div>
+           <div class="col-md-6">
+               {{ form.date_of_birth.label_tag }}
+               {{ form.date_of_birth }}
+               {{ form.date_of_birth.errors }}
+           </div>
+
+           <div class="col-md-4">
+               {{ form.position.label_tag }}
+               {{ form.position }}
+               {{ form.position.errors }}
+           </div>
+           <div class="col-md-4">
+               {{ form.department.label_tag }}
+               {{ form.department }}
+               {{ form.department.errors }}
+           </div>
+           <div class="col-md-4">
+               {{ form.employee_id.label_tag }}
+               {{ form.employee_id }}
+               {{ form.employee_id.errors }}
+           </div>
+
+           <div class="col-md-6">
+               {{ form.date_hired.label_tag }}
+               {{ form.date_hired }}
+               {{ form.date_hired.errors }}
+           </div>
+           <div class="col-md-6">
+               {{ form.contract_type.label_tag }}
+               {{ form.contract_type }}
+               {{ form.contract_type.errors }}
+           </div>
+
+           <div class="col-md-4">
+               {{ form.salary.label_tag }}
+               {{ form.salary }}
+               {{ form.salary.errors }}
+           </div>
+           <div class="col-md-4">
+               {{ form.shift.label_tag }}
+               {{ form.shift }}
+               {{ form.shift.errors }}
+           </div>
+           <div class="col-md-4">
+               {{ form.address.label_tag }}
+               {{ form.address }}
+               {{ form.address.errors }}
+           </div>
+
+           <div class="col-md-4">
+               {{ form.city.label_tag }}
+               {{ form.city }}
+               {{ form.city.errors }}
+           </div>
+           <div class="col-md-4">
+               {{ form.region.label_tag }}
+               {{ form.region }}
+               {{ form.region.errors }}
+           </div>
+           <div class="col-md-4">
+               {{ form.access_level.label_tag }}
+               {{ form.access_level }}
+               {{ form.access_level.errors }}
+           </div>
+
+           <div class="col-md-6">
+               {{ form.emergency_contact_name.label_tag }}
+               {{ form.emergency_contact_name }}
+               {{ form.emergency_contact_name.errors }}
+           </div>
+           <div class="col-md-6">
+               {{ form.emergency_contact_phone.label_tag }}
+               {{ form.emergency_contact_phone }}
+               {{ form.emergency_contact_phone.errors }}
+           </div>
+
+           <div class="col-md-6">
+               {{ form.qualifications.label_tag }}
+               {{ form.qualifications }}
+               {{ form.qualifications.errors }}
+           </div>
+           <div class="col-md-6">
+               {{ form.experience_years.label_tag }}
+               {{ form.experience_years }}
+               {{ form.experience_years.errors }}
+           </div>
+
+           <div class="col-12">
+               {{ form.skills.label_tag }}
+               {{ form.skills }}
+               {{ form.skills.errors }}
+           </div>
+
+           <div class="col-md-4">
+               {% if form.instance.profile_picture %}
+                   <img src="{{ form.instance.profile_picture.url }}" alt="Current Profile Picture" class="img-thumbnail mb-2" style="max-height: 100px;">
+               {% endif %}
+               {{ form.profile_picture.label_tag }}
+               {{ form.profile_picture }}
+               {{ form.profile_picture.errors }}
+           </div>
+
+           <div class="text-center">
+               <button type="submit" class="btn btn-primary">Save</button>
+               <a href="{% url 'staff_list' %}" class="btn btn-secondary">Cancel</a>
+           </div>
+       </form>
+   </div>
+</div>
+
+{% endblock %}

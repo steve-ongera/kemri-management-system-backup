@@ -1,0 +1,134 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+
+    <!-- Leaflet.js CSS (optional if you need maps) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/npm/chart.js' %}"></script>
+    
+    <style>
+        canvas {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .vaccine-list {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+
+
+    <div class="pagetitle">
+        <h1>Vaccine Effectiveness Over Weeks</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+                <li class="breadcrumb-item">Vaccine Analysis</li>
+                <li class="breadcrumb-item active">Effectiveness Chart</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Vaccine Effectiveness Chart -->
+                        <h5 class="card-title">Vaccine Effectiveness Over Weeks</h5>
+                        <canvas id="vaccineAnalysisChart" width="600" height="400"></canvas>
+                    </div>
+                </div>
+
+                <!-- Vaccine Ranking List -->
+                <div class="vaccine-list">
+                    <h2>Vaccine Ranking (Best to Worst)</h2>
+                    <ul>
+                        {% for vaccine, score in sorted_vaccines %}
+                            <li>{{ vaccine }} - Average Effectiveness: {{ score|floatformat:2 }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Weekly Vaccine Effectiveness Chart
+        const vaccineAnalysisCtx = document.getElementById('vaccineAnalysisChart').getContext('2d');
+        
+        const labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10'];
+
+        // Define vaccine effectiveness data
+        const vaccineData = {
+            {% for vaccine, scores in vaccine_effectiveness.items %}
+                '{{ vaccine|lower }}': {
+                    data: [{{ scores|join:", " }}],
+                    label: '{{ vaccine }}',
+                },
+            {% endfor %}
+        };
+
+        // Define colors for each vaccine
+        const vaccineColors = {
+            'bcg': 'rgba(75, 192, 192, 0.6)',  // teal
+            'vaccine x': 'rgba(255, 99, 132, 0.6)',  // red
+            'vaccine y': 'rgba(255, 206, 86, 0.6)',  // yellow
+            'vaccine z': 'rgba(54, 162, 235, 0.6)',  // blue
+        };
+
+        // Prepare datasets for Chart.js
+        const datasets = Object.keys(vaccineData).map(vaccine => ({
+            label: vaccineData[vaccine].label,
+            data: vaccineData[vaccine].data,
+            borderColor: vaccineColors[vaccine],
+            backgroundColor: vaccineColors[vaccine].replace('0.6', '0.2'),  // Change opacity for fill
+            borderWidth: 2,
+            fill: false,
+            tension: 0.4,  // Smooth curves
+        }));
+
+        const vaccineAnalysisChart = new Chart(vaccineAnalysisCtx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: datasets,
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Effectiveness (%)'
+                        },
+                        beginAtZero: true,
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Weeks'
+                        },
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                    }
+                }
+            }
+        });
+    </script>
+
+{% endblock %}

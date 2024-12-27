@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Report Details</h1>
+<p><strong>Patient:</strong> {{ report.patient.first_name }} {{ report.patient.last_name }}</p>
+<p><strong>Date:</strong> {{ report.date }}</p>
+<p><strong>Description:</strong> {{ report.description }}</p>
+<p>
+    <strong>File:</strong>
+    <a href="{{ report.get_file_url }}">{{ report.get_file_name }}</a>
+</p>
+<a href="{% url 'report_update' report.pk %}">Edit</a>
+<a href="{% url 'report_list' %}">Back to List</a>
+{% endblock %}

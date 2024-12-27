@@ -1,0 +1,104 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Patient Details</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'patient_list' %}">Patients</a></li>
+            <li class="breadcrumb-item active">Patient Details</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">{{ patient }}</h5>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            {% if patient.profile_picture %}
+                                <img src="{{ patient.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded">
+                            {% else %}
+                                <img src="{% static 'assets/img/profile.png' %}" alt="Profile Picture" class="img-fluid rounded">
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Phone</h6>
+                                    <p>{{ patient.phone }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Gender</h6>
+                                    <p>{{ patient.gender }}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Email</h6>
+                                    <p>{{ patient.email }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Address</h6>
+                                    <p>{{ patient.address }}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Blood Type</h6>
+                                    <p>{{ patient.blood_type }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Allergies</h6>
+                                    <p>{{ patient.allergies }}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Chronic Conditions</h6>
+                                    <p>{{ patient.chronic_conditions }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Medical History</h6>
+                                    <p>{{ patient.medical_history }}</p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Insurance Provider</h6>
+                                    <p>{{ patient.insurance_provider }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Emergency Contact</h6>
+                                    <p>{{ patient.emergency_contact_name }} ({{ patient.emergency_contact_number }})</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <a href="{% url 'patient_update' patient.pk %}" class="btn btn-primary me-2">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </a>
+                                <a href="{% url 'patient_list' %}" class="btn btn-secondary">
+                                    <i class="bi bi-arrow-left"></i> Back to List
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

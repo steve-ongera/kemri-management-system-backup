@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Medical Records</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item">Medical Records</li>
+            <li class="breadcrumb-item active">List</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Medical Records</h5>
+                    <a href="{% url 'medical_record_create' %}" class="btn btn-primary mb-3">Add New Record</a>
+                    <ul class="list-group">
+                        {% for record in records %}
+                        <li class="list-group-item">
+                            <a href="{% url 'medical_record_detail' record.pk %}">
+                                Record for {{ record.patient.first_name }} {{ record.patient.last_name }} on {{ record.date }}
+                            </a>
+                            - <a href="{% url 'medical_record_update' record.pk %}">Edit</a>
+                            - <a href="{% url 'medical_record_delete' record.pk %}">Delete</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

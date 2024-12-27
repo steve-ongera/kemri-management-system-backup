@@ -1,0 +1,38 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Delete Lab Test</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'labtest_list' %}">Lab Tests</a></li>
+            <li class="breadcrumb-item active">Delete Lab Test</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Confirm Deletion</h5>
+                    <p>Are you sure you want to delete the lab test for {{ test.patient.first_name }} {{ test.patient.last_name }}?</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-danger">Confirm</button>
+                            <a href="{% url 'labtest_list' %}" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

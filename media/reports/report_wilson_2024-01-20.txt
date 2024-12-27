@@ -1,0 +1,6 @@
+Medical Report
+
+Patient: James Wilson
+Date: 2024-01-20
+
+X-ray report of right knee. Shows minor osteoarthritis. Recommended physical therapy and anti-inflammatory medication.
