@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Questionnaires</h2>
+<ul>
+    {% for assignment in assignments %}
+    <li>
+        <strong>{{ assignment.questionnaire.title }}</strong> 
+        (Status: {{ assignment.status }}) - 
+        {% if assignment.status == 'pending' %}
+        <a href="{% url 'answer_questionnaire' assignment.id %}">Answer</a>
+        {% else %}
+        Completed
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

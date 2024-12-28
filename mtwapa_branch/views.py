@@ -1371,3 +1371,66 @@ def search_tb_patient(request):
         except TBPatient.DoesNotExist:
             patient = None
     return render(request, 'Tb_Section/tb_patient/search_patient.html', {'patient': patient})
+
+
+
+#questionare 
+@login_required
+def answer_questionnaire(request, assignment_id):
+    assignment = get_object_or_404(QuestionnaireAssignment, id=assignment_id, patient=request.user)
+    questions = assignment.questionnaire.questions.all()
+    
+    if request.method == 'POST':
+        form = QuestionnaireResponseForm(request.POST, questions=questions)
+        if form.is_valid():
+            for question in questions:
+                field_name = f"question_{question.id}"
+                response = QuestionnaireResponse.objects.create(
+                    assignment=assignment,
+                    question=question,
+                    submitted_at=now()
+                )
+                if question.question_type in ['text', 'scale', 'yes_no']:
+                    response.response_text = form.cleaned_data[field_name]
+                elif question.question_type in ['single']:
+                    selected_choice = QuestionChoice.objects.get(id=form.cleaned_data[field_name])
+                    response.selected_choices.add(selected_choice)
+                elif question.question_type == 'multiple':
+                    selected_choices = QuestionChoice.objects.filter(id__in=form.cleaned_data[field_name])
+                    response.selected_choices.set(selected_choices)
+                response.save()
+            assignment.status = 'completed'
+            assignment.completed_date = now()
+            assignment.save()
+            return redirect('questionnaire_list')  # Redirect to a list of questionnaires or another page
+    else:
+        form = QuestionnaireResponseForm(questions=questions)
+    
+    return render(request, 'questionnaire/answer_questionnaire.html', {
+        'assignment': assignment,
+        'form': form
+    })
+
+
+
+@login_required
+def view_responses(request, questionnaire_id):
+    questionnaire = get_object_or_404(Questionnaire, id=questionnaire_id, created_by=request.user)
+    assignments = QuestionnaireAssignment.objects.filter(questionnaire=questionnaire, status='completed').select_related('patient')
+    
+    return render(request, 'questionnaire/view_responses.html', {
+        'questionnaire': questionnaire,
+        'assignments': assignments,
+    })
+
+
+@login_required
+def list_questionnaires(request):
+    if request.user.is_staff:
+        # Admin view: List all questionnaires
+        assignments = QuestionnaireAssignment.objects.all().select_related('questionnaire', 'patient')
+    else:
+        # Patient view: Only list their assigned questionnaires
+        assignments = QuestionnaireAssignment.objects.filter(patient=request.user).select_related('questionnaire')
+    
+    return render(request, 'questionnaire/questionnaire_list.html', {'assignments': assignments})

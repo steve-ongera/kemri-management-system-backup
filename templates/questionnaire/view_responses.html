@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Responses for: {{ questionnaire.title }}</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Responses</th>
+            <th>Date Completed</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for assignment in assignments %}
+        <tr>
+            <td>{{ assignment.patient.username }}</td>
+            <td>
+                <ul>
+                    {% for response in assignment.responses.all %}
+                    <li>
+                        <strong>{{ response.question.question_text }}</strong>: 
+                        {% if response.response_text %}
+                        {{ response.response_text }}
+                        {% else %}
+                        {{ response.selected_choices.all|join:", " }}
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>{{ assignment.completed_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

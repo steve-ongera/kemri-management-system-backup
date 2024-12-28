@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0q4zclnx2&!&+rn^vw$5!xa#k!fu6h#mth8m^j9bolh4n*uyk('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*','https://e031-2c0f-fe38-220c-f86c-a988-a57a-d857-2c92.ngrok-free.app']
 
@@ -20,6 +20,7 @@ ALLOWED_HOSTS = ['*','https://e031-2c0f-fe38-220c-f86c-a988-a57a-d857-2c92.ngrok
 # Application definition
 
 INSTALLED_APPS = [
+    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -36,6 +37,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', #add whitenoise
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -111,28 +113,17 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-# Static files (CSS, JavaScript, Images)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR, 'static')
 
-# Directory where collectstatic will gather all static files
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Additional directories to look for static files
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
 ]
 
-# Media files (uploaded by users)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# STATIC_URL = '/static/'
-# STATICFILES_DIRS = [BASE_DIR / 'static']
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Collect static files here for production
 
 LOGIN_URL='login'
 LOGIN_REDIRECT_URL = '/'  # Redirect after login

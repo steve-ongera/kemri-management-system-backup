@@ -4,6 +4,8 @@ from django.utils.timezone import now
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.urls import reverse
 from django.utils import timezone
+from django.conf import settings
+from django.contrib.auth.models import User
 
 
 
@@ -505,3 +507,73 @@ class TBPatient(models.Model):
     class Meta:
         verbose_name = 'TB Patient'
         verbose_name_plural = 'TB Patients'
+
+
+#questionare
+
+class Questionnaire(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="created_questionnaires")  # Using User
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
+
+class Question(models.Model):
+    QUESTION_TYPES = (
+        ('text', 'Text Response'),
+        ('single', 'Single Choice'),
+        ('multiple', 'Multiple Choice'),
+        ('scale', 'Scale (1-5)'),
+        ('yes_no', 'Yes/No'),
+    )
+    
+    questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE, related_name='questions')
+    question_text = models.TextField()
+    question_type = models.CharField(max_length=10, choices=QUESTION_TYPES)
+    required = models.BooleanField(default=True)
+    order = models.IntegerField(default=0)
+    
+    class Meta:
+        ordering = ['order']
+
+    def __str__(self):
+        return f"{self.questionnaire.title} - {self.question_text[:50]}"
+
+class QuestionChoice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
+    choice_text = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.choice_text
+
+class QuestionnaireAssignment(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('expired', 'Expired'),
+    )
+    
+    questionnaire = models.ForeignKey(Questionnaire, on_delete=models.CASCADE)
+    patient = models.ForeignKey(User, on_delete=models.CASCADE)  # Changed to use User instead of Patient
+    assigned_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="assigned_questionnaires")
+    assigned_date = models.DateTimeField(auto_now_add=True)
+    due_date = models.DateTimeField()
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    completed_date = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.questionnaire.title} - {self.patient.username}"
+
+class QuestionnaireResponse(models.Model):
+    assignment = models.ForeignKey(QuestionnaireAssignment, on_delete=models.CASCADE, related_name='responses')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    response_text = models.TextField(blank=True, null=True)
+    selected_choices = models.ManyToManyField(QuestionChoice, blank=True)
+    scale_value = models.IntegerField(null=True, blank=True)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Response to {self.question.question_text[:50]}"

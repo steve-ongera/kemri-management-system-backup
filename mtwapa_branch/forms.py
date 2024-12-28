@@ -430,3 +430,53 @@ class TBPatientForm(forms.ModelForm):
             'performance_status': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Performance Status'}),
             'follow_up_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
+
+
+
+from django import forms
+from .models import QuestionnaireResponse, Question, QuestionChoice
+
+class QuestionnaireResponseForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        questions = kwargs.pop('questions', None)
+        super().__init__(*args, **kwargs)
+        
+        if questions:
+            for question in questions:
+                field_name = f"question_{question.id}"
+                if question.question_type == 'text':
+                    self.fields[field_name] = forms.CharField(
+                        label=question.question_text, 
+                        required=question.required, 
+                        widget=forms.Textarea
+                    )
+                elif question.question_type == 'single':
+                    choices = [(choice.id, choice.choice_text) for choice in question.choices.all()]
+                    self.fields[field_name] = forms.ChoiceField(
+                        label=question.question_text, 
+                        required=question.required, 
+                        choices=choices, 
+                        widget=forms.RadioSelect
+                    )
+                elif question.question_type == 'multiple':
+                    choices = [(choice.id, choice.choice_text) for choice in question.choices.all()]
+                    self.fields[field_name] = forms.MultipleChoiceField(
+                        label=question.question_text, 
+                        required=question.required, 
+                        choices=choices, 
+                        widget=forms.CheckboxSelectMultiple
+                    )
+                elif question.question_type == 'yes_no':
+                    self.fields[field_name] = forms.ChoiceField(
+                        label=question.question_text, 
+                        required=question.required, 
+                        choices=[('yes', 'Yes'), ('no', 'No')],
+                        widget=forms.RadioSelect
+                    )
+                elif question.question_type == 'scale':
+                    self.fields[field_name] = forms.IntegerField(
+                        label=question.question_text, 
+                        required=question.required, 
+                        min_value=1, 
+                        max_value=5
+                    )

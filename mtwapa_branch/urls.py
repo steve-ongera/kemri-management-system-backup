@@ -101,6 +101,10 @@ urlpatterns = [
     path('vaccine-analysis/', views.vaccine_analysis, name='vaccine_analysis'),
     path('county_victims_analysis/', views.county_victims_analysis, name='county_victims_analysis'),
     path('tb_patients_map/', views.tb_patients_map, name='tb_patients_map'),
+
+    path('answer/<int:assignment_id>/', views.answer_questionnaire, name='answer_questionnaire'),
+    path('responses/<int:questionnaire_id>/', views.view_responses, name='view_responses'),
+    path('list_questionnaires/', views.list_questionnaires, name='questionnaire_list'),
 ]
 
 
