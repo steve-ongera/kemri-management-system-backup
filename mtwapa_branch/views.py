@@ -1373,6 +1373,19 @@ def search_tb_patient(request):
     return render(request, 'Tb_Section/tb_patient/search_patient.html', {'patient': patient})
 
 
+def randomized_patients_view(request):
+    """
+    View to list all randomized patients.
+    """
+    randomized_patients = Patient.objects.filter(randomization_status='Randomized')
+    return render(request, 'patient/randomized_patients.html', {'patients': randomized_patients})
+
+def unrandomized_patients_view(request):
+    """
+    View to list all unrandomized patients.
+    """
+    unrandomized_patients = Patient.objects.filter(randomization_status='Unrandomized')
+    return render(request, 'patient/unrandomized_patients.html', {'patients': unrandomized_patients})
 
 #questionare 
 @login_required

@@ -1,19 +1,50 @@
-{% extends 'base.html' %}
+{% extends "base/base.html" %}
+
 {% block content %}
-<h1>Medical Record Details</h1>
-<p><strong>Patient:</strong> {{ record.patient }}</p>
-<p><strong>Doctor:</strong> Dr. {{ record.doctor.first_name }} {{ record.doctor.last_name }}</p>
-<p><strong>Date:</strong> {{ record.date }}</p>
-<p><strong>Visit Reason:</strong> {{ record.visit_reason }}</p>
-<p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
-<p><strong>Symptoms:</strong> {{ record.symptoms }}</p>
-<p><strong>Vital Signs:</strong> {{ record.vital_signs }}</p>
-<p><strong>Tests Ordered:</strong> {{ record.tests_ordered }}</p>
-<p><strong>Test Results:</strong> {{ record.test_results }}</p>
-<p><strong>Prescription:</strong> {{ record.prescription }}</p>
-<p><strong>Procedures:</strong> {{ record.procedures }}</p>
-<p><strong>Follow-Up Date:</strong> {{ record.follow_up_date }}</p>
-<p><strong>Additional Notes:</strong> {{ record.additional_notes }}</p>
-<a href="{% url 'medical_record_update' record.pk %}">Edit</a>
-<a href="{% url 'medical_record_list' %}">Back to List</a>
+
+<div class="pagetitle">
+    <h1>Medical Record Details</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'medical_record_list' %}">Medical Records</a></li>
+            <li class="breadcrumb-item active">Medical Record Details</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Medical Record Details</h5>
+
+                    <div class="mb-3">
+                        <p><strong>Patient:</strong> {{ record.patient }}</p>
+                        <p><strong>Doctor:</strong> Dr. {{ record.doctor.first_name }} {{ record.doctor.last_name }}</p>
+                        <p><strong>Date:</strong> {{ record.date }}</p>
+                        <p><strong>Visit Reason:</strong> {{ record.visit_reason }}</p>
+                        <p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
+                        <p><strong>Symptoms:</strong> {{ record.symptoms }}</p>
+                        <p><strong>Vital Signs:</strong> {{ record.vital_signs }}</p>
+                        <p><strong>Tests Ordered:</strong> {{ record.tests_ordered }}</p>
+                        <p><strong>Test Results:</strong> {{ record.test_results }}</p>
+                        <p><strong>Prescription:</strong> {{ record.prescription }}</p>
+                        <p><strong>Procedures:</strong> {{ record.procedures }}</p>
+                        <p><strong>Follow-Up Date:</strong> {{ record.follow_up_date }}</p>
+                        <p><strong>Additional Notes:</strong> {{ record.additional_notes }}</p>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'medical_record_update' record.pk %}" class="btn btn-primary me-2">Edit</a>
+                        <a href="{% url 'medical_record_list' %}" class="btn btn-secondary">Back to List</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

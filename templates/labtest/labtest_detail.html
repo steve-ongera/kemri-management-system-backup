@@ -1,10 +1,41 @@
-{% extends 'base.html' %}
+{% extends "base/base.html" %}
+
 {% block content %}
-<h1>Lab Test Details</h1>
-<p><strong>Patient:</strong> {{ test.patient.first_name }} {{ test.patient.last_name }}</p>
-<p><strong>Test Name:</strong> {{ test.test_name }}</p>
-<p><strong>Test Date:</strong> {{ test.get_test_date_formatted }}</p>
-<p><strong>Results:</strong> {{ test.results|default:"No results available" }}</p>
-<a href="{% url 'labtest_update' test.pk %}">Edit</a>
-<a href="{% url 'labtest_list' %}">Back to List</a>
+
+<div class="pagetitle">
+    <h1>Lab Test Details</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'labtest_list' %}">Lab Tests</a></li>
+            <li class="breadcrumb-item active">Lab Test Details</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Lab Test Details</h5>
+
+                    <div class="mb-3">
+                        <p><strong>Patient:</strong> {{ test.patient.first_name }} {{ test.patient.last_name }}</p>
+                        <p><strong>Test Name:</strong> {{ test.test_name }}</p>
+                        <p><strong>Test Date:</strong> {{ test.get_test_date_formatted }}</p>
+                        <p><strong>Results:</strong> {{ test.results|default:"No results available" }}</p>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <a href="{% url 'labtest_update' test.pk %}" class="btn btn-primary me-2">Edit</a>
+                        <a href="{% url 'labtest_list' %}" class="btn btn-secondary">Back to List</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 {% endblock %}
