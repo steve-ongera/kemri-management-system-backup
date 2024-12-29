@@ -234,6 +234,14 @@
           <i class="bi bi-people"></i><span>TB Section</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tb-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+
+          <!--Dashboard-->
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'tb_dashboard'%}">
+              <i class="bi bi-card-list"></i>
+              <span>Analysis Dashboard </span>
+            </a>
+          </li><!-- End Register Page Nav -->
           
           <!-- TB Sub-List -->
           <li>
@@ -282,7 +290,7 @@
 
           <li>
             <a class="nav-link collapsed" data-bs-target="#county_victims_analysis" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-person-x"></i><span>County Analysis</span><i class="bi bi-chevron-down ms-auto"></i>
+              <i class="bi bi-person-x"></i><span>Analysis Graphs</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="county_victims_analysis" class="nav-content collapse">
               <li>
@@ -290,24 +298,24 @@
                   <i class="bi bi-circle"></i><span>victims analysis</span>
                 </a>
               </li>
-              
-            </ul>
-          </li>
-          
-          <!-- Non-Staff Sub-List -->
-          <li>
-            <a class="nav-link collapsed" data-bs-target="#tb_patients_map" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-person-x"></i><span>Country Analysis</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="tb_patients_map" class="nav-content collapse">
+
               <li>
                 <a href="{% url 'tb_patients_map' %}">
                   <i class="bi bi-circle"></i><span>Maps</span>
                 </a>
               </li>
+
+              <li>
+                <a href="{% url 'graph_tb' %}">
+                  <i class="bi bi-circle"></i><span>Population Analysis</span>
+                </a>
+              </li>
               
             </ul>
           </li>
+          
+          <!-- Non-Staff Sub-List -->
+          
           
         </ul>
       </li><!-- End Staff Nav --><!-- End F.A.Q Page Nav -->

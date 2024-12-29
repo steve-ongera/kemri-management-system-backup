@@ -46,6 +46,7 @@ import pandas as pd
 from django.db.models.functions import ExtractYear
 from django.db.models.functions import ExtractYear, ExtractMonth
 from dateutil.relativedelta import relativedelta
+import random
 
 def calculate_patient_growth():
     # Get current date and first day of current and previous months
@@ -1447,3 +1448,140 @@ def list_questionnaires(request):
         assignments = QuestionnaireAssignment.objects.filter(patient=request.user).select_related('questionnaire')
     
     return render(request, 'questionnaire/questionnaire_list.html', {'assignments': assignments})
+
+#tb analysis
+from django.shortcuts import render
+from .models import TBPatient
+
+def tb_dashboards(request):
+    # Prepare statistics
+    total_patients = TBPatient.objects.count()
+    randomized_patients = TBPatient.objects.filter(randomization_status='Randomized').count()
+    unrandomized_patients = TBPatient.objects.filter(randomization_status='Not Randomized').count()
+    hiv_positive = TBPatient.objects.filter(hiv_status='Positive').count()
+    pregnancy_positive = TBPatient.objects.filter(pregnancy_status='Positive').count()
+    mtb_detected = TBPatient.objects.filter(mtb_a_status='Detected').count()
+    oft_positive = TBPatient.objects.filter(oft_status='Positive').count()
+
+    # Weekly attendance statistics
+    weeks = range(1, 11)  # weeks 1 to 10
+    weekly_attendance = {
+        week: TBPatient.objects.filter(**{f'week_{week}__gt': 0}).count()
+        for week in weeks
+    }
+
+    # Dropout analysis
+    dropouts = [
+        {
+            'week': i,
+            'count': TBPatient.objects.filter(
+                **{f'week_{i}__gt': 0},
+                **{f'week_{i+1}': 0}
+            ).count()
+        }
+        for i in range(1, 9)  # Check dropouts between weeks 1-9
+    ]
+
+    # Prepare context
+    context = {
+        'total_patients': total_patients,
+        'randomized_patients': randomized_patients,
+        'unrandomized_patients': unrandomized_patients,
+        'hiv_positive': hiv_positive,
+        'pregnancy_positive': pregnancy_positive,
+        'mtb_detected': mtb_detected,
+        'oft_positive': oft_positive,
+        'weekly_attendance': weekly_attendance,
+        'dropouts': dropouts,
+    }
+
+    # Render the template with context
+    return render(request, 'admin/Tb_dashboard.html', context)
+
+
+
+
+
+def graph_tb(request):
+    # Filter out records where randomization_date is NULL
+    randomization_trends = (
+        TBPatient.objects.filter(randomization_date__isnull=False)  # Exclude NULL dates
+        .annotate(
+            month=ExtractMonth('randomization_date'),
+            year=ExtractYear('randomization_date')
+        )
+        .values('year', 'month')
+        .annotate(
+            randomized_count=Count('id', filter=Q(randomization_status='Randomized')),
+            not_randomized_count=Count('id', filter=Q(randomization_status='Not Randomized')),
+        )
+        .order_by('year', 'month')
+    )
+
+    # Safely format the months for the graph
+    months = [
+        f"{entry['year']}-{entry['month']:02d}" for entry in randomization_trends
+        if entry['year'] is not None and entry['month'] is not None
+    ]
+    randomized_counts = [entry['randomized_count'] for entry in randomization_trends]
+    not_randomized_counts = [entry['not_randomized_count'] for entry in randomization_trends]
+
+    # Overall randomization statistics
+    patients = TBPatient.objects.all()
+    randomized = patients.filter(randomization_status='Randomized').count()
+    not_randomized = patients.filter(randomization_status='Not Randomized').count()
+
+    return render(request, 'admin/analysis_graph.html', {
+        'randomized': randomized,
+        'not_randomized': not_randomized,
+        'months': months,
+        'randomized_counts': randomized_counts,
+        'not_randomized_counts': not_randomized_counts,
+    })
+
+
+def randomized_tb_patients_view(request):
+    # Filter patients who have the randomization status as 'Randomized'
+    randomized_patients = TBPatient.objects.filter(randomization_status='Randomized')
+    
+    # Shuffle the queryset
+    randomized_patients = list(randomized_patients)
+    random.shuffle(randomized_patients)
+    
+    # Render the shuffled list
+    context = {
+        'randomized_patients': randomized_patients
+    }
+    return render(request, 'Tb_Section/tb_patient/randomized_patients.html', context)
+
+def unrandomized_tb_patients_view(request):
+    # Filter patients who have the randomization status as 'Not Randomized'
+    unrandomized_patients = TBPatient.objects.filter(randomization_status='Not Randomized')
+
+    # Render the list of unrandomized patients
+    context = {
+        'unrandomized_patients': unrandomized_patients
+    }
+    return render(request, 'Tb_Section/tb_patient/unrandomized_patients.html', context)
+
+
+def hiv_positive_tb_patients_view(request):
+    # Filter patients with HIV positive status
+    hiv_positive_patients = TBPatient.objects.filter(hiv_status='Positive')
+
+    # Render the list of patients with HIV
+    context = {
+        'hiv_positive_patients': hiv_positive_patients
+    }
+    return render(request, 'Tb_Section/tb_patient/hiv_positive_patients.html', context)
+
+
+def pregnant_tb_patients_view(request):
+    # Filter patients with pregnancy positive status
+    pregnant_patients = TBPatient.objects.filter(pregnancy_status='Positive')
+
+    # Render the list of pregnant TB patients
+    context = {
+        'pregnant_patients': pregnant_patients
+    }
+    return render(request, 'Tb_Section/tb_patient/pregnant_tb_patients.html', context)

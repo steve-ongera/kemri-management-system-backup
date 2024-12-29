@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif;">
+    <h1 style="font-size: 2.5rem; font-weight: bold; text-align: center; color: #333; margin-bottom: 30px;">
+        TB Patient Dashboard
+    </h1>
+
+    <!-- Main Statistics -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px;">
+        <div style="background: #e0f7fa; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <h3 style="font-size: 1.2rem; color: #00796b; margin-bottom: 10px;">Total Patients</h3>
+            <p style="font-size: 2rem; font-weight: bold; color: #004d40;">{{ total_patients }}</p>
+        </div>
+        <div style="background: #e8f5e9; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <h3 style="font-size: 1.2rem; color: #388e3c; margin-bottom: 10px;">Randomized Patients</h3>
+            <p style="font-size: 2rem; font-weight: bold; color: #1b5e20;">{{ randomized_patients }}</p>
+        </div>
+        <div style="background: #ffebee; border-radius: 10px; padding: 20px; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <h3 style="font-size: 1.2rem; color: #d32f2f; margin-bottom: 10px;">Unrandomized Patients</h3>
+            <p style="font-size: 2rem; font-weight: bold; color: #b71c1c;">{{ unrandomized_patients }}</p>
+        </div>
+    </div>
+
+    <!-- Test Results -->
+    <div style="background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin-bottom: 40px;">
+        <h2 style="font-size: 1.8rem; font-weight: bold; margin-bottom: 20px; color: #333;">Test Results</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+            <div style="text-align: center;">
+                <h3 style="font-size: 1.1rem; color: #d32f2f;">HIV Positive</h3>
+                <p style="font-size: 1.5rem; color: #b71c1c; font-weight: bold;">{{ hiv_positive }}</p>
+            </div>
+            <div style="text-align: center;">
+                <h3 style="font-size: 1.1rem; color: #7b1fa2;">Pregnancy Positive</h3>
+                <p style="font-size: 1.5rem; color: #4a148c; font-weight: bold;">{{ pregnancy_positive }}</p>
+            </div>
+            <div style="text-align: center;">
+                <h3 style="font-size: 1.1rem; color: #ff6f00;">MTB Detected</h3>
+                <p style="font-size: 1.5rem; color: #e65100; font-weight: bold;">{{ mtb_detected }}</p>
+            </div>
+            <div style="text-align: center;">
+                <h3 style="font-size: 1.1rem; color: #0288d1;">OFT Positive</h3>
+                <p style="font-size: 1.5rem; color: #01579b; font-weight: bold;">{{ oft_positive }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Weekly Attendance -->
+    <div style="background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); margin-bottom: 40px;">
+        <h2 style="font-size: 1.8rem; font-weight: bold; margin-bottom: 20px; color: #333;">Weekly Attendance</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+            {% for week, count in weekly_attendance.items %}
+            <div style="text-align: center;">
+                <h3 style="font-size: 1.1rem; color: #2e7d32;">Week {{ week }}</h3>
+                <p style="font-size: 1.5rem; color: #1b5e20; font-weight: bold;">{{ count }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Dropout Analysis -->
+    <div style="background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+        <h2 style="font-size: 1.8rem; font-weight: bold; margin-bottom: 20px; color: #333;">Patient Dropouts</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px;">
+            {% for dropout in dropouts %}
+            <div style="text-align: center;">
+                <h3 style="font-size: 1.1rem; color: #c62828;">After Week {{ dropout.week }}</h3>
+                <p style="font-size: 1.5rem; color: #b71c1c; font-weight: bold;">{{ dropout.count }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -465,6 +465,17 @@ class TBPatient(models.Model):
         ('Vaccine Y', 'Vaccine Y'),
     ]
 
+    RANDOMIZATION_STATUS = [
+        ('Randomized', 'Randomized'),
+        ('Not Randomized', 'Not Randomized'),
+    ]
+
+    STUDY_GROUP_CHOICES = [
+        ('Control', 'Control Group'),
+        ('Treatment', 'Treatment Group'),
+        ('Not Applicable', 'Not Applicable'),
+    ]
+
     # Patient information
     user_name = models.CharField(max_length=100, unique=True)
     identification_no = models.CharField(max_length=20, unique=True)
@@ -473,12 +484,19 @@ class TBPatient(models.Model):
     last_name = models.CharField(max_length=50)
     dob = models.DateField()  # Date of birth
     diagnosis_date = models.DateField(default=timezone.now)  # Date the patient was diagnosed with TB
-    county = models.CharField(max_length=100,  null=True, blank=True) 
-    # TB-specific data
+    county = models.CharField(max_length=100, null=True, blank=True)
+    date_added = models.DateTimeField( blank=True, null=True )
+    gender = models.CharField(
+        max_length=10,
+        choices=[('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')],
+        blank=True,
+        null=True
+    )
 
+    # TB-specific data
     tb_stage = models.CharField(max_length=50, choices=TB_STAGES, default='Latent TB')
     vaccine_received = models.CharField(max_length=50, choices=VACCINE_CHOICES)
-    vaccine_effectiveness = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)  # Effectiveness of vaccine in percentage
+    vaccine_effectiveness = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     
     # Week-by-week progress (percentage of recovery)
     week_1 = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
@@ -493,13 +511,86 @@ class TBPatient(models.Model):
     week_10 = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
 
     # Treatment details
-    treatment_start_date = models.DateField(null=True, blank=True)  # Treatment start date
-    treatment_end_date = models.DateField(null=True, blank=True)  # Treatment end date
-    treatment_notes = models.TextField()  # Notes on the treatment process
+    treatment_start_date = models.DateField(null=True, blank=True)
+    treatment_end_date = models.DateField(null=True, blank=True)
+    treatment_notes = models.TextField()
     
     # Performance and follow-up
-    performance_status = models.TextField()  # Text field to track how the patient has been responding to treatment
-    follow_up_date = models.DateField(null=True, blank=True)  # Date for next follow-up
+    performance_status = models.TextField()
+    follow_up_date = models.DateField(null=True, blank=True)
+
+    # Randomization and study fields
+    randomization_status = models.CharField(
+        max_length=20,
+        choices=RANDOMIZATION_STATUS,
+        default='Not Randomized'
+    )
+    randomization_date = models.DateTimeField(null=True, blank=True)
+    study_group = models.CharField(
+        max_length=20,
+        choices=STUDY_GROUP_CHOICES,
+        default='Not Applicable'
+    )
+
+    # Test results for randomization criteria
+    hiv_status = models.CharField(
+        max_length=10,
+        choices=[('Positive', 'Positive'), ('Negative', 'Negative')],
+        blank=True,
+        null=True
+    )
+    oft_status = models.CharField(
+        max_length=10,
+        choices=[('Positive', 'Positive'), ('Negative', 'Negative')],
+        blank=True,
+        null=True
+    )
+    mtb_a_status = models.CharField(
+        max_length=15,
+        choices=[('Detected', 'Detected'), ('Not Detected', 'Not Detected')],
+        blank=True,
+        null=True
+    )
+    pregnancy_status = models.CharField(
+        max_length=10,
+        choices=[('Positive', 'Positive'), ('Negative', 'Negative')],
+        blank=True,
+        null=True
+    )
+
+    # Fields for unrandomized patients
+    exclusion_reason = models.TextField(blank=True, null=True)
+    alternative_treatment = models.TextField(blank=True, null=True)
+    referral_facility = models.CharField(max_length=100, blank=True, null=True)
+    next_evaluation_date = models.DateField(null=True, blank=True)
+
+    def determine_randomization_status(self):
+        """
+        Determines if a patient is eligible for randomization based on test results.
+        """
+        if (
+            self.hiv_status == 'Negative' and
+            self.oft_status == 'Positive' and
+            self.mtb_a_status == 'Not Detected' and
+            self.pregnancy_status == 'Negative'
+        ):
+            return 'Randomized'
+        return 'Not Randomized'
+
+    def save(self, *args, **kwargs):
+        # Automatically determine randomization status before saving
+        self.randomization_status = self.determine_randomization_status()
+        
+        # Set randomization date if newly randomized
+        if self.randomization_status == 'Randomized' and not self.randomization_date:
+            self.randomization_date = timezone.now()
+            
+        # Clear randomization date if not randomized
+        if self.randomization_status == 'Not Randomized':
+            self.randomization_date = None
+            self.study_group = 'Not Applicable'
+            
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.user_name} - {self.identification_no}"

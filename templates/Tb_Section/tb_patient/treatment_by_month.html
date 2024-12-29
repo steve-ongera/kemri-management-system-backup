@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treatment By Month</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Treatment Data by Month - {{ current_year }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Month</th>
+                <th>Randomized Patients</th>
+                <th>Unrandomized Patients</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for month, counts in monthly_data.items %}
+                <tr>
+                    <td>{{ month }}</td>
+                    <td>{{ counts.randomized }}</td>
+                    <td>{{ counts.unrandomized }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

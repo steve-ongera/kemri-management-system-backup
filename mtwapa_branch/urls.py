@@ -98,8 +98,14 @@ urlpatterns = [
     path('tb-patient/<int:pk>/update/', views.tb_patient_update, name='tb_patient_update'),
     path('tb-patient/<int:pk>/delete/', views.tb_patient_delete, name='tb_patient_delete'),
     path('search-patient/', views.search_tb_patient, name='search_tb_patient'),
+    path('tb-dashboard/', views.tb_dashboards, name='tb_dashboard'),
+    path("tb_Patient_graphs/" , views.graph_tb , name="graph_tb"), 
+    path('randomized-tb-patients/', views.randomized_tb_patients_view, name='randomized_tb_patients'),
+    path('unrandomized-tb-patients/', views.unrandomized_tb_patients_view, name='unrandomized_tb_patients'),
+    path('hiv-positive-tb-patients/', views.hiv_positive_tb_patients_view, name='hiv_positive_tb_patients'),
+    path('pregnant-tb-patients/', views.pregnant_tb_patients_view, name='pregnant_tb_patients'),
 
-    path('vaccine-performance/', views.vaccine_performance, name='vaccine_performance'),  # Add this line
+    path('vaccine-performance/', views.vaccine_performance, name='vaccine_performance'),  #  Add this line
     path('vaccine-analysis/', views.vaccine_analysis, name='vaccine_analysis'),
     path('county_victims_analysis/', views.county_victims_analysis, name='county_victims_analysis'),
     path('tb_patients_map/', views.tb_patients_map, name='tb_patients_map'),

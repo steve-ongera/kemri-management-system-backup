@@ -1,0 +1,64 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Randomized TB Patients</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item">TB Patients</li>
+            <li class="breadcrumb-item active">Randomized Patients</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">List of Randomized TB Patients</h5>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped datatable">
+                            <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>ID</th>
+                                    <th>Identification Type</th>
+                                    <th>TB Stage</th>
+                                    <th>Diagnosis Date</th>
+                                    <th>County</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if randomized_patients %}
+                                    {% for patient in randomized_patients %}
+                                    <tr>
+                                        <td>{{ patient.first_name }}</td>
+                                        <td>{{ patient.last_name }}</td>
+                                        <td>{{ patient.identification_no }}</td>
+                                        <td>{{ patient.identification_type }}</td>
+                                        <td>{{ patient.tb_stage }}</td>
+                                        <td>{{ patient.diagnosis_date }}</td>
+                                        <td>{{ patient.county }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="7" class="text-center">No randomized patients found.</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div><!-- End Table with stripped rows -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
