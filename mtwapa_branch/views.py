@@ -1688,7 +1688,7 @@ def lost_to_follow_up_delete(request, pk):
 # List view
 def withdrawn_consent_list(request):
     withdrawn_consents = WithdrawnConsent.objects.all()
-    return render(request, 'withdrawn_consent_list.html', {'withdrawn_consents': withdrawn_consents})
+    return render(request, 'Tb_Section/tb_patient/withdrawn_consent_list.html', {'withdrawn_consents': withdrawn_consents})
 
 # Create view
 def withdrawn_consent_create(request):
@@ -1699,12 +1699,12 @@ def withdrawn_consent_create(request):
             return redirect('withdrawn_consent_list')
     else:
         form = WithdrawnConsentForm()
-    return render(request, 'withdrawn_consent_form.html', {'form': form})
+    return render(request, 'Tb_Section/tb_patient/withdrawn_consent_form.html', {'form': form})
 
 # Detail view
 def withdrawn_consent_detail(request, id):
     consent = get_object_or_404(WithdrawnConsent, id=id)
-    return render(request, 'withdrawn_consent_detail.html', {'consent': consent})
+    return render(request, 'Tb_Section/tb_patient/withdrawn_consent_detail.html', {'consent': consent})
 
 # Update view
 def withdrawn_consent_update(request, id):
@@ -1716,7 +1716,7 @@ def withdrawn_consent_update(request, id):
             return redirect('withdrawn_consent_detail', id=id)
     else:
         form = WithdrawnConsentForm(instance=consent)
-    return render(request, 'withdrawn_consent_form.html', {'form': form})
+    return render(request, 'Tb_Section/tb_patient/withdrawn_consent_form.html', {'form': form})
 
 # Delete view
 def withdrawn_consent_delete(request, id):
@@ -1724,4 +1724,4 @@ def withdrawn_consent_delete(request, id):
     if request.method == 'POST':
         consent.delete()
         return redirect('withdrawn_consent_list')
-    return render(request, 'withdrawn_consent_confirm_delete.html', {'consent': consent})
+    return render(request, 'Tb_Section/tb_patient/withdrawn_consent_confirm_delete.html', {'consent': consent})
