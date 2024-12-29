@@ -1,0 +1,59 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Lost to Follow-Up Cases</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Lost to Follow-Up</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Manage Lost to Follow-Up Cases</h5>
+                    <a href="{% url 'lost_to_follow_up_create' %}" class="btn btn-primary mb-3">Add New Case</a>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped datatable">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Last Follow-Up Date</th>
+                                    <th>Weeks Missing</th>
+                                    <th>Reason</th>
+                                    <th>Reported By</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for case in lost_cases %}
+                                <tr>
+                                    <td>{{ case.patient.first_name }} {{ case.patient.last_name }}</td>
+                                    <td>{{ case.last_follow_up_date }}</td>
+                                    <td>{{ case.weeks_missing }}</td>
+                                    <td>{{ case.reason_for_lost_follow_up }}</td>
+                                    <td>{{ case.reported_by }}</td>
+                                    <td>
+                                        <a href="{% url 'lost_to_follow_up_detail' case.pk %}" class="btn btn-info btn-sm">View</a>
+                                        <a href="{% url 'lost_to_follow_up_update' case.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                        <a href="{% url 'lost_to_follow_up_delete' case.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div><!-- End Table with stripped rows -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

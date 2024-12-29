@@ -1,0 +1,89 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Create Serious Adverse Event</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'serious_adverse_event_list' %}">Serious Adverse Events</a></li>
+            <li class="breadcrumb-item active">Create</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Create New Serious Adverse Event</h5>
+                    <p>Fill in the details below to create a new serious adverse event record.</p>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <label for="event_type" class="col-sm-2 col-form-label">Event Type</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="event_type" name="event_type" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="event_date" class="col-sm-2 col-form-label">Event Date</label>
+                            <div class="col-sm-10">
+                                <input type="date" class="form-control" id="event_date" name="event_date" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="description" class="col-sm-2 col-form-label">Description</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="patient" class="col-sm-2 col-form-label">Patient</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="patient" name="patient" required>
+                                    <option value="" disabled selected>Select Patient</option>
+                                    {% for patient in patients %}
+                                        <option value="{{ patient.id }}">{{ patient.full_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="doctor" class="col-sm-2 col-form-label">Doctor</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" id="doctor" name="doctor" required>
+                                    <option value="" disabled selected>Select Doctor</option>
+                                    {% for doctor in doctors %}
+                                        <option value="{{ doctor.id }}">{{ doctor.first_name }} {{ doctor.last_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="report" class="col-sm-2 col-form-label">Report</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" id="report" name="report">
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Create Event</button>
+                            <a href="{% url 'serious_adverse_event_list' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

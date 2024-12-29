@@ -1,0 +1,71 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Update Serious Adverse Event</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'serious_adverse_event_list' %}">Serious Adverse Events</a></li>
+            <li class="breadcrumb-item active">Update</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Update Serious Adverse Event Information</h5>
+
+                    <p>Update the details of the serious adverse event.</p>
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+
+                        <div class="row mb-3">
+                            <label for="event_type" class="col-sm-2 col-form-label">Event Type</label>
+                            <div class="col-sm-10">
+                                {{ form.event_type }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="event_date" class="col-sm-2 col-form-label">Event Date</label>
+                            <div class="col-sm-10">
+                                {{ form.event_date }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="description" class="col-sm-2 col-form-label">Description</label>
+                            <div class="col-sm-10">
+                                {{ form.description }}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="report" class="col-sm-2 col-form-label">Upload Report</label>
+                            <div class="col-sm-10">
+                                {{ form.report }}
+                                {% if serious_adverse_event.report %}
+                                    <p>Current Report: <a href="{{ serious_adverse_event.report.url }}" target="_blank">View Current Report</a></p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Update Event</button>
+                            <a href="{% url 'serious_adverse_event_list' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

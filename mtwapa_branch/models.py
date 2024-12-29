@@ -668,3 +668,83 @@ class QuestionnaireResponse(models.Model):
 
     def __str__(self):
         return f"Response to {self.question.question_text[:50]}"
+
+
+class SeriousAdverseEvent(models.Model):
+    patient = models.ForeignKey(TBPatient, on_delete=models.CASCADE, related_name='serious_adverse_events')
+    event_type = models.CharField(
+        max_length=100, choices=[('Death', 'Death'), ('Severe Reaction', 'Severe Reaction'), ('Other', 'Other')],
+        help_text="Type of serious adverse event"
+    )
+    event_date = models.DateField(help_text="Date when the event occurred")
+    cause_of_death_or_reaction = models.CharField(max_length=255, blank=True, null=True, help_text="Cause of the event (if applicable)")
+    description = models.TextField(blank=True, null=True, help_text="Additional description or details about the event")
+    reported_by = models.CharField(max_length=255, help_text="Name of the person who reported the event")
+    kemri_project_code = models.CharField(
+        max_length=100,
+        default='KEMRI-TB',
+        help_text="Project code for KEMRI reference"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.patient.first_name} {self.patient.last_name} - {self.event_type} ({self.event_date})"
+
+    class Meta:
+        ordering = ['-event_date']
+        verbose_name = "Serious Adverse Event"
+        verbose_name_plural = "Serious Adverse Events"
+
+
+class LostToFollowUp(models.Model):
+    patient = models.ForeignKey(TBPatient, on_delete=models.CASCADE, related_name='lost_to_follow_ups')
+    last_follow_up_date = models.DateField(help_text="Date of the last follow-up visit")
+    weeks_missing = models.PositiveIntegerField(help_text="Number of weeks since the last visit")
+    reason_for_lost_follow_up = models.TextField(blank=True, null=True, help_text="Reason why the patient stopped attending")
+    reported_by = models.CharField(max_length=255, help_text="Name of the person reporting the case")
+    kemri_project_code = models.CharField(
+        max_length=100,
+        default='KEMRI-TB',
+        help_text="Project code for KEMRI reference"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.patient.first_name} {self.patient.last_name} - Lost to Follow-Up"
+
+    class Meta:
+        ordering = ['-last_follow_up_date']
+        verbose_name = "Lost to Follow-Up"
+        verbose_name_plural = "Lost to Follow-Ups"
+
+
+class WithdrawnConsent(models.Model):
+    patient = models.ForeignKey(TBPatient, on_delete=models.CASCADE, related_name='withdrawn_consent_cases')
+    withdrawal_date = models.DateField(help_text="Date when the consent was withdrawn")
+    reason_for_withdrawal = models.CharField(
+        max_length=255,
+        choices=[('Pregnancy', 'Pregnancy'), ('Relocation', 'Relocation'), ('Other', 'Other')],
+        help_text="Reason for withdrawal of consent"
+    )
+    additional_details = models.TextField(blank=True, null=True, help_text="Any additional details regarding the withdrawal")
+    reported_by = models.CharField(max_length=255, help_text="Name of the person reporting the case")
+    kemri_project_code = models.CharField(
+        max_length=100,
+        default='KEMRI-TB',
+        help_text="Project code for KEMRI reference"
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.patient.first_name} {self.patient.last_name} - Withdrawn Consent"
+
+    class Meta:
+        ordering = ['-withdrawal_date']
+        verbose_name = "Withdrawn Consent"
+        verbose_name_plural = "Withdrawn Consents"

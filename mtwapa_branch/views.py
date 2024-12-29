@@ -1585,3 +1585,143 @@ def pregnant_tb_patients_view(request):
         'pregnant_patients': pregnant_patients
     }
     return render(request, 'Tb_Section/tb_patient/pregnant_tb_patients.html', context)
+
+# List for SeriousAdverseEvent
+@login_required
+def serious_adverse_event_list(request, patient_id):
+    patient = TBPatient.objects.get(id=patient_id)
+    events = SeriousAdverseEvent.objects.filter(patient=patient)
+    return render(request, 'Tb_Section/tb_patient/serious_adverse_event_list.html', {'events': events, 'patient': patient})
+
+# Create for SeriousAdverseEvent
+def create_serious_adverse_event(request, patient_id):
+    patient = get_object_or_404(TBPatient, id=patient_id)
+    if request.method == 'POST':
+        form = SeriousAdverseEventForm(request.POST)
+        if form.is_valid():
+            form.instance.patient = patient  # Associate with TBPatient
+            form.save()
+            messages.success(request, 'Serious adverse event recorded successfully.')
+            return redirect('serious_adverse_event_list', patient_id=patient.id)
+    else:
+        form = SeriousAdverseEventForm()
+    return render(request, 'Tb_Section/tb_patient/create_serious_adverse_event.html', {'form': form, 'patient': patient})
+
+# View for SeriousAdverseEvent
+def view_serious_adverse_event_detail(request, event_id):
+    event = get_object_or_404(SeriousAdverseEvent, id=event_id)
+    return render(request, 'Tb_Section/tb_patient/view_serious_adverse_event.html', {'event': event})
+
+# Update for SeriousAdverseEvent
+def update_serious_adverse_event(request, event_id):
+    event = get_object_or_404(SeriousAdverseEvent, id=event_id)
+    if request.method == 'POST':
+        form = SeriousAdverseEventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Serious adverse event updated successfully.')
+            return redirect('serious_adverse_event_detail', event_id=event.id)
+    else:
+        form = SeriousAdverseEventForm(instance=event)
+    return render(request, 'Tb_Section/tb_patient/update_serious_adverse_event.html', {'form': form, 'event': event})
+
+# Delete for SeriousAdverseEvent
+def delete_serious_adverse_event(request, event_id):
+    event = get_object_or_404(SeriousAdverseEvent, id=event_id)
+    patient_id = event.patient.id
+    if request.method == 'POST':
+        event.delete()
+        messages.success(request, 'Serious adverse event deleted successfully.')
+        return redirect('serious_adverse_event_list', patient_id=patient_id)
+    return render(request, 'Tb_Section/tb_patient/delete_serious_adverse_event.html', {'event': event})
+
+# Same CRUD operations can be defined for LostToFollowUp and WithdrawnConsent by replacing the model and forms
+
+
+@login_required
+def lost_to_follow_up_list(request):
+    lost_cases = LostToFollowUp.objects.all()
+    return render(request, 'Tb_Section/tb_patient/list_lost_to_follow_up.html', {'lost_cases': lost_cases})
+
+
+@login_required
+def lost_to_follow_up_create(request):
+    if request.method == "POST":
+        form = LostToFollowUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('lost_to_follow_up_list')
+    else:
+        form = LostToFollowUpForm()
+    return render(request, 'Tb_Section/tb_patient/create_lost_to_follow_up.html', {'form': form})
+
+
+@login_required
+def lost_to_follow_up_detail(request, pk):
+    case = LostToFollowUp.objects.get(pk=pk)
+    return render(request, 'Tb_Section/tb_patient/view_lost_to_follow_up.html', {'case': case})
+
+
+@login_required
+def lost_to_follow_up_update(request, pk):
+    case = get_object_or_404(LostToFollowUp, pk=pk)
+    if request.method == "POST":
+        form = LostToFollowUpForm(request.POST, instance=case)
+        if form.is_valid():
+            form.save()
+            return redirect('lost_to_follow_up_list')
+    else:
+        form = LostToFollowUpForm(instance=case)
+    return render(request, 'Tb_Section/tb_patient/update_lost_to_follow_up.html', {'form': form, 'case': case})
+
+@login_required
+def lost_to_follow_up_delete(request, pk):
+    case = get_object_or_404(LostToFollowUp, pk=pk)
+    if request.method == "POST":
+        case.delete()
+        messages.success(request, "Case deleted successfully.")
+        return redirect('lost_to_follow_up_list')
+    return render(request, 'Tb_Section/tb_patient/delete_lost_to_follow_up.html', {'case': case})
+
+
+
+# List view
+def withdrawn_consent_list(request):
+    withdrawn_consents = WithdrawnConsent.objects.all()
+    return render(request, 'withdrawn_consent_list.html', {'withdrawn_consents': withdrawn_consents})
+
+# Create view
+def withdrawn_consent_create(request):
+    if request.method == 'POST':
+        form = WithdrawnConsentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('withdrawn_consent_list')
+    else:
+        form = WithdrawnConsentForm()
+    return render(request, 'withdrawn_consent_form.html', {'form': form})
+
+# Detail view
+def withdrawn_consent_detail(request, id):
+    consent = get_object_or_404(WithdrawnConsent, id=id)
+    return render(request, 'withdrawn_consent_detail.html', {'consent': consent})
+
+# Update view
+def withdrawn_consent_update(request, id):
+    consent = get_object_or_404(WithdrawnConsent, id=id)
+    if request.method == 'POST':
+        form = WithdrawnConsentForm(request.POST, instance=consent)
+        if form.is_valid():
+            form.save()
+            return redirect('withdrawn_consent_detail', id=id)
+    else:
+        form = WithdrawnConsentForm(instance=consent)
+    return render(request, 'withdrawn_consent_form.html', {'form': form})
+
+# Delete view
+def withdrawn_consent_delete(request, id):
+    consent = get_object_or_404(WithdrawnConsent, id=id)
+    if request.method == 'POST':
+        consent.delete()
+        return redirect('withdrawn_consent_list')
+    return render(request, 'withdrawn_consent_confirm_delete.html', {'consent': consent})

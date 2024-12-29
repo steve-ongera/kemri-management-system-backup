@@ -1,0 +1,53 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Lost to Follow-Up</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Lost to Follow-Up</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Manage Lost to Follow-Up</h5>
+                    <p>Here you can view, edit, or delete lost follow-up records for the patient.</p>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped datatable">
+                            <thead>
+                                <tr>
+                                    <th>Last Follow-Up Date</th>
+                                    <th>Reason for Lost Follow-Up</th>
+                                    <th>Details</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for followup in followups %}
+                                <tr>
+                                    <td>{{ followup.last_follow_up_date }}</td>
+                                    <td>{{ followup.reason_for_lost_follow_up }}</td>
+                                    <td><a href="{% url 'lost_to_follow_up_detail' followup.id %}">View</a></td>
+                                    <td><a href="{% url 'update_lost_to_follow_up' followup.id %}">Edit</a></td>
+                                    <td><a href="{% url 'delete_lost_to_follow_up' followup.id %}">Delete</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div><!-- End Table with stripped rows -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Serious Adverse Event Details</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'serious_adverse_event_list' %}">Serious Adverse Events</a></li>
+            <li class="breadcrumb-item active">Details</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Serious Adverse Event Information</h5>
+
+                    <p>Below are the details of the serious adverse event:</p>
+
+                    <div class="row mb-3">
+                        <label for="event_type" class="col-sm-2 col-form-label">Event Type</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-plaintext">{{ event.event_type }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="event_date" class="col-sm-2 col-form-label">Event Date</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-plaintext">{{ event.event_date }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="description" class="col-sm-2 col-form-label">Description</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-plaintext">{{ event.description }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="patient" class="col-sm-2 col-form-label">Patient</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-plaintext">{{ event.patient.full_name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="doctor" class="col-sm-2 col-form-label">Doctor</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-plaintext">{{ event.doctor.first_name }} {{ event.doctor.last_name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="report" class="col-sm-2 col-form-label">Report</label>
+                        <div class="col-sm-10">
+                            {% if event.report %}
+                                <a href="{{ event.report.url }}" target="_blank" class="btn btn-info">View Report</a>
+                            {% else %}
+                                <p>No report uploaded</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <a href="{% url 'serious_adverse_event_list' %}" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

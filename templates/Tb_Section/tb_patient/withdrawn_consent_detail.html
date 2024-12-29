@@ -1,0 +1,7 @@
+<h1>{{ consent.patient.first_name }} {{ consent.patient.last_name }} - Withdrawn Consent</h1>
+<p><strong>Reason for Withdrawal:</strong> {{ consent.reason_for_withdrawal }}</p>
+<p><strong>Withdrawal Date:</strong> {{ consent.withdrawal_date }}</p>
+<p><strong>Additional Details:</strong> {{ consent.additional_details }}</p>
+<p><strong>Reported By:</strong> {{ consent.reported_by }}</p>
+<p><strong>KEMRI Project Code:</strong> {{ consent.kemri_project_code }}</p>
+<p><a href="{% url 'withdrawn_consent_list' %}">Back to list</a></p>

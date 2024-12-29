@@ -1,0 +1,53 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Serious Adverse Events</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item active">Serious Adverse Events</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Manage Serious Adverse Events</h5>
+                    <p>Here you can view, edit, or delete serious adverse events related to the patient.</p>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped datatable">
+                            <thead>
+                                <tr>
+                                    <th>Event Type</th>
+                                    <th>Event Date</th>
+                                    <th>Details</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for event in events %}
+                                <tr>
+                                    <td>{{ event.event_type }}</td>
+                                    <td>{{ event.event_date }}</td>
+                                    <td><a href="{% url 'serious_adverse_event_detail' event.id %}">View</a></td>
+                                    <td><a href="{% url 'update_serious_adverse_event' event.id %}">Edit</a></td>
+                                    <td><a href="{% url 'delete_serious_adverse_event' event.id %}">Delete</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div><!-- End Table with stripped rows -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

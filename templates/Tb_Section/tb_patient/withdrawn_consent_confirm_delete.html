@@ -1,0 +1,7 @@
+<h1>Are you sure you want to delete this consent?</h1>
+<p><strong>{{ consent.patient.first_name }} {{ consent.patient.last_name }}</strong> - Withdrawn Consent</p>
+<form method="POST">
+  {% csrf_token %}
+  <button type="submit">Yes, delete</button>
+</form>
+<a href="{% url 'withdrawn_consent_list' %}">Cancel</a>

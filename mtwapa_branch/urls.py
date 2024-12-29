@@ -113,6 +113,24 @@ urlpatterns = [
     path('answer/<int:assignment_id>/', views.answer_questionnaire, name='answer_questionnaire'),
     path('responses/<int:questionnaire_id>/', views.view_responses, name='view_responses'),
     path('list_questionnaires/', views.list_questionnaires, name='questionnaire_list'),
+
+    path('patient/<int:patient_id>/create-serious-adverse-event/', views.create_serious_adverse_event, name='create_serious_adverse_event'),
+    path('serious-adverse-event/<int:event_id>/', views.view_serious_adverse_event_detail, name='serious_adverse_event_detail'),
+    path('serious-adverse-event/<int:event_id>/update/', views.update_serious_adverse_event, name='update_serious_adverse_event'),
+    path('serious-adverse-event/<int:event_id>/delete/', views.delete_serious_adverse_event, name='delete_serious_adverse_event'),
+
+    path('lost-to-follow-up/', views.lost_to_follow_up_list, name='lost_to_follow_up_list'),
+    path('lost-to-follow-up/create/', views.lost_to_follow_up_create, name='lost_to_follow_up_create'),
+    path('lost-to-follow-up/<int:pk>/', views.lost_to_follow_up_detail, name='lost_to_follow_up_detail'),
+    path('lost-to-follow-up/<int:pk>/update/', views.lost_to_follow_up_update, name='lost_to_follow_up_update'),
+    path('lost-to-follow-up/<int:pk>/delete/', views.lost_to_follow_up_delete, name='lost_to_follow_up_delete'),
+
+
+    path('withdrawn-consents/', views.withdrawn_consent_list, name='withdrawn_consent_list'),
+    path('withdrawn-consents/create/', views.withdrawn_consent_create, name='withdrawn_consent_create'),
+    path('withdrawn-consents/<int:id>/', views.withdrawn_consent_detail, name='withdrawn_consent_detail'),
+    path('withdrawn-consents/<int:id>/update/', views.withdrawn_consent_update, name='withdrawn_consent_update'),
+    path('withdrawn-consents/<int:id>/delete/', views.withdrawn_consent_delete, name='withdrawn_consent_delete'),
 ]
 
 

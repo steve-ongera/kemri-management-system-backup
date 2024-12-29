@@ -480,3 +480,23 @@ class QuestionnaireResponseForm(forms.Form):
                         min_value=1, 
                         max_value=5
                     )
+
+
+
+# Form for SeriousAdverseEvent
+class SeriousAdverseEventForm(forms.ModelForm):
+    class Meta:
+        model = SeriousAdverseEvent
+        fields = ['event_type', 'event_date', 'cause_of_death_or_reaction', 'description', 'reported_by']
+
+# Form for LostToFollowUp
+class LostToFollowUpForm(forms.ModelForm):
+    class Meta:
+        model = LostToFollowUp
+        fields = ['last_follow_up_date', 'weeks_missing', 'reason_for_lost_follow_up', 'reported_by']
+
+# Form for WithdrawnConsent
+class WithdrawnConsentForm(forms.ModelForm):
+    class Meta:
+        model = WithdrawnConsent
+        fields = ['withdrawal_date', 'reason_for_withdrawal', 'additional_details', 'reported_by']

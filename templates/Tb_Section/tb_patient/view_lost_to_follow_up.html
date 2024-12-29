@@ -1,0 +1,41 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+
+<div class="pagetitle">
+    <h1>Lost to Follow-Up Case Details</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'lost_to_follow_up_list' %}">Lost to Follow-Up</a></li>
+            <li class="breadcrumb-item active">Details</li>
+        </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Case Information</h5>
+                    <ul>
+                        <li><strong>Patient:</strong> {{ case.patient.first_name }} {{ case.patient.last_name }}</li>
+                        <li><strong>Last Follow-Up Date:</strong> {{ case.last_follow_up_date }}</li>
+                        <li><strong>Weeks Missing:</strong> {{ case.weeks_missing }}</li>
+                        <li><strong>Reason for Lost Follow-Up:</strong> {{ case.reason_for_lost_follow_up }}</li>
+                        <li><strong>Reported By:</strong> {{ case.reported_by }}</li>
+                        <li><strong>KEMRI Project Code:</strong> {{ case.kemri_project_code }}</li>
+                    </ul>
+
+                    <div class="text-center">
+                        <a href="{% url 'lost_to_follow_up_update' case.pk %}" class="btn btn-warning">Edit</a>
+                        <a href="{% url 'lost_to_follow_up_delete' case.pk %}" class="btn btn-danger">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
