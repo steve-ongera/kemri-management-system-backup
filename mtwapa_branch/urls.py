@@ -114,6 +114,7 @@ urlpatterns = [
     path('responses/<int:questionnaire_id>/', views.view_responses, name='view_responses'),
     path('list_questionnaires/', views.list_questionnaires, name='questionnaire_list'),
 
+    path('serious_adverse_event_list/', views.serious_adverse_event_list, name='serious_adverse_event_list'), 
     path('patient/<int:patient_id>/create-serious-adverse-event/', views.create_serious_adverse_event, name='create_serious_adverse_event'),
     path('serious-adverse-event/<int:event_id>/', views.view_serious_adverse_event_detail, name='serious_adverse_event_detail'),
     path('serious-adverse-event/<int:event_id>/update/', views.update_serious_adverse_event, name='update_serious_adverse_event'),

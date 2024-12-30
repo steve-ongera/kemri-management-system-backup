@@ -89,6 +89,17 @@ def calculate_patient_growth():
 
 @login_required
 def dashboard(request):
+    #stats
+    stats = {
+        'labels': ['Randomized', 'Not Randomized', 'HIV Positive', 'Pregnant', 'MTB Detected'],
+        'counts': [
+            TBPatient.objects.filter(randomization_status='Randomized').count(),
+            TBPatient.objects.filter(randomization_status='Not Randomized').count(),
+            TBPatient.objects.filter(hiv_status='Positive').count(),
+            TBPatient.objects.filter(pregnancy_status='Positive').count(),
+            TBPatient.objects.filter(mtb_a_status='Detected').count()
+        ]
+    }
     # Get total counts
     total_patients = Patient.objects.count()
     randomized_patients = Patient.objects.filter(randomization_status='Randomized').count()
@@ -196,6 +207,8 @@ def dashboard(request):
         'male_unrandomized': json.dumps(male_unrandomized),
         'female_randomized': json.dumps(female_randomized),
         'female_unrandomized': json.dumps(female_unrandomized),
+        #stats
+        'stats': stats,
     }
     
     
@@ -1588,51 +1601,51 @@ def pregnant_tb_patients_view(request):
 
 # List for SeriousAdverseEvent
 @login_required
-def serious_adverse_event_list(request, patient_id):
-    patient = TBPatient.objects.get(id=patient_id)
-    events = SeriousAdverseEvent.objects.filter(patient=patient)
+def serious_adverse_event_list(request):
+    patient = TBPatient.objects.all()
+    events = SeriousAdverseEvent.objects.all()
     return render(request, 'Tb_Section/tb_patient/serious_adverse_event_list.html', {'events': events, 'patient': patient})
 
 # Create for SeriousAdverseEvent
-def create_serious_adverse_event(request, patient_id):
-    patient = get_object_or_404(TBPatient, id=patient_id)
+def create_serious_adverse_event(request, id):
+    patient = get_object_or_404(TBPatient, id=id)
     if request.method == 'POST':
         form = SeriousAdverseEventForm(request.POST)
         if form.is_valid():
             form.instance.patient = patient  # Associate with TBPatient
             form.save()
             messages.success(request, 'Serious adverse event recorded successfully.')
-            return redirect('serious_adverse_event_list', patient_id=patient.id)
+            return redirect('serious_adverse_event_list')
     else:
         form = SeriousAdverseEventForm()
     return render(request, 'Tb_Section/tb_patient/create_serious_adverse_event.html', {'form': form, 'patient': patient})
 
 # View for SeriousAdverseEvent
-def view_serious_adverse_event_detail(request, event_id):
-    event = get_object_or_404(SeriousAdverseEvent, id=event_id)
+def view_serious_adverse_event_detail(request, id):
+    event = get_object_or_404(SeriousAdverseEvent, id=id)
     return render(request, 'Tb_Section/tb_patient/view_serious_adverse_event.html', {'event': event})
 
 # Update for SeriousAdverseEvent
-def update_serious_adverse_event(request, event_id):
-    event = get_object_or_404(SeriousAdverseEvent, id=event_id)
+def update_serious_adverse_event(request, id):
+    event = get_object_or_404(SeriousAdverseEvent, id=id)
     if request.method == 'POST':
         form = SeriousAdverseEventForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
             messages.success(request, 'Serious adverse event updated successfully.')
-            return redirect('serious_adverse_event_detail', event_id=event.id)
+            return redirect('serious_adverse_event_detail')
     else:
         form = SeriousAdverseEventForm(instance=event)
     return render(request, 'Tb_Section/tb_patient/update_serious_adverse_event.html', {'form': form, 'event': event})
 
 # Delete for SeriousAdverseEvent
-def delete_serious_adverse_event(request, event_id):
-    event = get_object_or_404(SeriousAdverseEvent, id=event_id)
+def delete_serious_adverse_event(request, id):
+    event = get_object_or_404(SeriousAdverseEvent, id=id)
     patient_id = event.patient.id
     if request.method == 'POST':
         event.delete()
         messages.success(request, 'Serious adverse event deleted successfully.')
-        return redirect('serious_adverse_event_list', patient_id=patient_id)
+        return redirect('serious_adverse_event_list')
     return render(request, 'Tb_Section/tb_patient/delete_serious_adverse_event.html', {'event': event})
 
 # Same CRUD operations can be defined for LostToFollowUp and WithdrawnConsent by replacing the model and forms
