@@ -38,7 +38,7 @@
                                 {% if randomized_patients %}
                                     {% for patient in randomized_patients %}
                                     <tr>
-                                        <td>{{ patient.first_name }}</td>
+                                        <td><a href="{% url 'tb_patient_detail' patient.id %}">{{ patient.first_name }}</a></td>
                                         <td>{{ patient.last_name }}</td>
                                         <td>{{ patient.identification_no }}</td>
                                         <td>{{ patient.identification_type }}</td>
