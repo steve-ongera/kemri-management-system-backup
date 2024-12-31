@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a Django-based web application designed for managing and analyzing data related to disease testing and research at KEMRI (Kenya Medical Research Institute). The system provides a dynamic dashboard for visualizing key statistics and trends, ensuring data-driven decision-making.
+This is a Django-based website application designed for managing and analyzing data related to disease testing and research at KEMRI (Kenya Medical Research Institute). The system provides a dynamic dashboard for visualizing key statistics and trends, ensuring data-driven decision-making.
 
 
 ![System Status](https://img.shields.io/badge/status-active-success.svg)
