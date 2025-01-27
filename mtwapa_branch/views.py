@@ -1,7 +1,6 @@
 # views.py
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login ,logout
 from .models import *
 from .forms import *
 from django.contrib.auth.decorators import login_required
@@ -89,6 +88,7 @@ def calculate_patient_growth():
 
 @login_required
 def dashboard(request):
+    
     #stats
     stats = {
         'labels': ['Randomized', 'Not Randomized', 'HIV Positive', 'Pregnant', 'MTB Detected'],
