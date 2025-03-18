@@ -48,6 +48,40 @@
                     {{ form.dob }}
                     <div class="text-danger small">{{ form.dob.errors }}</div>
                 </div>
+                <div class="col-12">
+                    <h5 class="text-primary mt-3">Decison making </h5>
+                    <hr>
+                </div>
+
+                <div class="col-md-4">
+                    {{ form.randomization_status.label_tag }}
+                    {{ form.randomization_status }}
+                    <div class="text-danger small">{{ form.randomization_status.errors }}</div>
+                </div>
+
+                <div class="col-md-4">
+                    {{ form.hiv_status.label_tag }}
+                    {{ form.hiv_status}}
+                    <div class="text-danger small">{{ form.hiv_status.errors }}</div>
+                </div>
+
+                <div class="col-md-4">
+                    {{ form.oft_status.label_tag }}
+                    {{ form.oft_status}}
+                    <div class="text-danger small">{{ form.oft_status.errors }}</div>
+                </div>
+
+                <div class="col-md-4">
+                    {{ form.mtb_a_status.label_tag }}
+                    {{ form.mtb_a_status}}
+                    <div class="text-danger small">{{ form.mtb_a_status.errors }}</div>
+                </div>
+
+                <div class="col-md-8">
+                    {{ form.pregnancy_status.label_tag }}
+                    {{ form.pregnancy_status}}
+                    <div class="text-danger small">{{ form.pregnancy_status.errors }}</div>
+                </div>
 
                 {# Diagnosis Information #}
                 <div class="col-12">

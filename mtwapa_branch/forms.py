@@ -401,7 +401,8 @@ class TBPatientForm(forms.ModelForm):
             'week_1', 'week_2', 'week_3', 'week_4', 'week_5', 
             'week_6', 'week_7', 'week_8', 'week_9', 'week_10',
             'treatment_start_date', 'treatment_end_date', 'treatment_notes', 
-            'performance_status', 'follow_up_date'
+            'performance_status', 'follow_up_date' , 'randomization_status' ,'hiv_status', 'oft_status','mtb_a_status','pregnancy_status'
+    
         ]
         widgets = {
             'user_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
@@ -413,6 +414,11 @@ class TBPatientForm(forms.ModelForm):
             'diagnosis_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'tb_stage': forms.Select(attrs={'class': 'form-select'}),
             'vaccine_received': forms.Select(attrs={'class': 'form-select'}),
+            'randomization_status': forms.Select(attrs={'class': 'form-select'}),
+            'hiv_status':forms.Select(attrs={'class': 'form-select'}),
+            'oft_status':forms.Select(attrs={'class': 'form-select'}),
+            'mtb_a_status':forms.Select(attrs={'class': 'form-select'}),
+            'pregnancy_status':forms.Select(attrs={'class': 'form-select'}),
             'vaccine_effectiveness': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Vaccine Effectiveness'}),
             'week_1': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Week 1 Progress'}),
             'week_2': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Week 2 Progress'}),
