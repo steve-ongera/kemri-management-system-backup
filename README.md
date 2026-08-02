@@ -1,4 +1,4 @@
-# KEMRI Data Management System 🏥
+# KEMRI Data Management System 
 
 ## Overview
 
@@ -11,7 +11,7 @@ This is a Django-based website application designed for managing and analyzing d
 
 ---
 
-## 📋 Key Features:
+##  Key Features:
 
 
 -  **Disease Testing Data**: Add and view details of tested diseases, including test counts and trends.
@@ -34,11 +34,11 @@ This is a Django-based website application designed for managing and analyzing d
 - Charting Library: ECharts
 - Others: Python, Django ORM
 
-## 🏗 Architecture
+##  Architecture
 
 ### Primary Models
 
-#### 👨‍⚕️ Medical Staff
+####  Medical Staff
 | Model | Description |
 |-------|-------------|
 | `Doctor` | Specialists with department assignments and availability tracking |
@@ -46,14 +46,14 @@ This is a Django-based website application designed for managing and analyzing d
 | `Staff` | Administrative and support personnel |
 | `NonStaff` | Temporary personnel and visitors |
 
-#### 👤 Patient Care
+####  Patient Care
 | Model | Description |
 |-------|-------------|
 | `Patient` | Comprehensive patient information and history |
 | `MedicalRecord` | Detailed visit documentation and treatment plans |
 | `Appointment` | Scheduling and visit management |
 
-#### 🏢 Administrative
+####  Administrative
 | Model | Description |
 |-------|-------------|
 | `Department` | Organizational units with research focus |
@@ -62,7 +62,7 @@ This is a Django-based website application designed for managing and analyzing d
 
 ---
 
-## 💾 Data Structure
+##  Data Structure
 
 ### Key Relationships
 
@@ -86,7 +86,7 @@ graph TD
 
 ---
 
-## 🔧 Technical Specifications
+##  Technical Specifications
 
 ### Requirements
 
@@ -105,7 +105,7 @@ django-crispy-forms>=2.0
 
 ---
 
-## 📁 Model Details
+##  Model Details
 
 ### Doctor Model
 - Professional credentials
@@ -133,7 +133,7 @@ django-crispy-forms>=2.0
 
 ---
 
-## 🔐 Security Implementation
+##  Security Implementation
 
 - Data encryption at rest
 - Secure file storage
@@ -143,7 +143,7 @@ django-crispy-forms>=2.0
 
 ---
 
-## 📈 Performance Considerations
+##  Performance Considerations
 
 - Optimized database queries
 - Efficient file handling
@@ -152,12 +152,12 @@ django-crispy-forms>=2.0
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
 
 ---
 
-## 📄 License
+##  License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
